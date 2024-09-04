@@ -15,11 +15,9 @@ classifiers = [
 dependencies = ["pandas"]
 
 [project.urls]
-Homepage = "https://gitlab.com/hycrypt/hycrypt"
-Documentation = "https://hycrypt.psira.me"
-Repository = "https://gitlab.com/hycrypt/hycrypt"
-Issues = "https://gitlab.com/hycrypt/hycrypt/-/issues"
-Changelog = "https://gitlab.com/hycrypt/hycrypt/-/blob/main/CHANGELOG"
+Homepage = "https://gitlab.com/Psira/deeplabcut2yolo"
+Repository = "https://gitlab.com/Psira/deeplabcut2yolo"
+Issues = "https://gitlab.com/Psira/deeplabcut2yolo/-/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
