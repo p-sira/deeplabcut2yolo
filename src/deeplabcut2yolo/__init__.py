@@ -5,7 +5,7 @@
 Convert DeepLabCut dataset to YOLO format
 
 Quick Start:
-deeplabcut2yolo.convert
+deeplabcut2yolo.convert(json_path, csv_path, root_dir, n_class=2)
 
 ============
 
