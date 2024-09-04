@@ -3,7 +3,6 @@
 
 import json
 import pandas as pd
-import os
 
 
 def __merge_json_csv(json_path, csv_path, key) -> pd.DataFrame:
