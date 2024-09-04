@@ -1,1 +1,4 @@
 .venv
+src/deeplabcut2yolo.egg-info
+dist
+build
