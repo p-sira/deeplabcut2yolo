@@ -4,7 +4,7 @@
 __all__ = ["__name__", "__version__", "__author__", "__license__", "__copyright__"]
 
 __name__ = "deeplabcut2yolo"
-__version__ = "0.0.1"
+__version__ = "1.0"
 __author__ = "Sira Pornsiriprasert"
 __license__ = "GPL-3.0"
 __copyright__ = f"Copyright 2024 {__author__}"
