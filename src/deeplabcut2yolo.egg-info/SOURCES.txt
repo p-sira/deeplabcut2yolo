@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/deeplabcut2yolo/__about__.py
+src/deeplabcut2yolo/__init__.py
+src/deeplabcut2yolo/deeplabcut2yolo.py
+src/deeplabcut2yolo.egg-info/PKG-INFO
+src/deeplabcut2yolo.egg-info/SOURCES.txt
+src/deeplabcut2yolo.egg-info/dependency_links.txt
+src/deeplabcut2yolo.egg-info/requires.txt
+src/deeplabcut2yolo.egg-info/top_level.txt
