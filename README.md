@@ -16,4 +16,4 @@ To install deeplabcut2yolo using pip:
 pip install deeplabcut2yolo
 ```
 
-See example in example-marmosets.ipynb
+See example in example_marmosets.ipynb
