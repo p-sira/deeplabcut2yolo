@@ -75,13 +75,10 @@ def __create_yolo(row, precision, root_dir, n_class, class_id):
         f.write(out)
 
 
-type File = str | bytes | os.PathLike
-
-
 def convert(
-    json_path: File,
-    csv_path: File,
-    root_dir: File,
+    json_path: str,
+    csv_path: str,
+    root_dir: str,
     n_class: int = 1,
     precision: int = 6,
     keypoint_column_key: str = "dlc",
@@ -101,9 +98,9 @@ def convert(
   want to train a model using one class, then n_class=1 and override_classes=[0, 0].
 
   Args:
-      json_path (File): Path to the dataset json file
-      csv_path (File): Path to the dataset csv file
-      root_dir (File): Path to the dataset root directory that contains training and validation image directories.
+      json_path (str): Path to the dataset json file
+      csv_path (str): Path to the dataset csv file
+      root_dir (str): Path to the dataset root directory that contains training and validation image directories.
       n_class (int, optional): Number of classes in the dataset. Defaults to 1.
       precision (int, optional): Floating point precision. Defaults to 6.
       keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
