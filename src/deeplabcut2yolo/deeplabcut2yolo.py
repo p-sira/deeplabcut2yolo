@@ -57,6 +57,9 @@ def __calculate_xywh(bbox):
 
 
 def __format_coords(coords, precision):
+    """
+    Format the coords into a string of <px0> <py0> <visibility0> <px1> <py1> <visibility1> ...
+    """
     out = ""
     for i in range(0, len(coords), 2):
         if coords[i] is None or coords[i + 1] is None:
@@ -66,10 +69,10 @@ def __format_coords(coords, precision):
     return out
 
 
-def __create_yolo(row, precision, root_dir, n_class, class_id):
+def __create_yolo(row, precision, root_dir, n_datapoint, datapoint_classes):
     out = ""
-    for i in range(n_class):
-        out += f"{class_id[i]} {row[f'{i}_x']:.{precision}f} {row[f'{i}_y']:.{precision}f} {row[f'{i}_w']:.{precision}f} {row[f'{i}_h']:.{precision}f} {row[f'data_{i}']}\n"
+    for i in range(n_datapoint):
+        out += f"{datapoint_classes[i]} {row[f'{i}_x']:.{precision}f} {row[f'{i}_y']:.{precision}f} {row[f'{i}_w']:.{precision}f} {row[f'{i}_h']:.{precision}f} {row[f'data_{i}']}\n"
     with open(root_dir + "/".join(row["file_name"][:-4].split("_")) + ".txt", "w") as f:
         f.write(out)
 
@@ -78,81 +81,77 @@ def convert(
     json_path: str,
     csv_path: str,
     root_dir: str,
-    n_class: int = 1,
+    datapoint_classes: list[int],
+    n_keypoint_per_datapoint: int,
     precision: int = 6,
     keypoint_column_key: str = "dlc",
-    override_classes: list[int] | None = None,
 ) -> None:
-  """ Convert DeepLabCut dataset to YOLO format
+    """Convert DeepLabCut dataset to YOLO format
 
-  The root_dir argument is the path to the dataset root directory that contains training and validation 
-  image directories as labeled in the file_name column in the json file. For example, data from the file_name 
-  column, training-images_img00001.png and valid-images_img001.png, the root directory would be "./dataset/", where 
-  it contains subdirectories ./dataset/training-images/ and ./dataset/valid-images/
+    The root_dir argument is the path to the dataset root directory that contains training and validation
+    image directories as labeled in the file_name column in the json file. For example, data from the file_name
+    column, training-images_img00001.png and valid-images_img001.png, the root directory would be "./dataset/", where
+    it contains subdirectories ./dataset/training-images/ and ./dataset/valid-images/
 
-  keypoint_column_key is the column name prefix of the keypoints in the csv. For example, if all the keypoints
-  column are named "dlc", then use "dlc" as the parameter.
+    keypoint_column_key is the column name prefix of the keypoints in the csv. For example, if all the keypoints
+    column are named "dlc", then use "dlc" as the parameter.
 
-  override_classes is a list of class id to map and override. For example, the dataset has two classes [0, 1] but you
-  want to train a model using one class, then n_class=1 and override_classes=[0, 0].
+    Args:
+        json_path (str): Path to the dataset json file
+        csv_path (str): Path to the dataset csv file
+        root_dir (str): Path to the dataset root directory that contains training and validation image directories
+        datapoint_classes (list[int]): A list of class id of each datapoint
+        n_keypoint_per_datapoint (int): Number of keypoints per each datapoint
+        precision (int, optional): Floating point precision. Defaults to 6.
+        keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
+    Raises:
+        ValueError: Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2
+        ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint
+        ValueError: The length of datapoint_classes must match the number of datapoint
+        TypeError: The items in datapoint_classes must be int
+    """
 
-  Args:
-      json_path (str): Path to the dataset json file
-      csv_path (str): Path to the dataset csv file
-      root_dir (str): Path to the dataset root directory that contains training and validation image directories.
-      n_class (int, optional): Number of classes in the dataset. Defaults to 1.
-      precision (int, optional): Floating point precision. Defaults to 6.
-      keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
-      override_classes (list[int] | None, optional): A list of class id to map. Defaults to None.
+    if n_keypoint_per_datapoint % 2 != 0:
+        raise ValueError(
+            "Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2"
+        )
 
-  Raises:
-      ValueError: The length of override_classes list does not match the number of classes
-      ValueError: Number of keypoints and classes mismatch: the number of keypoints is not divisible by the number of classes
-      ValueError: Keypoints cannot be separated into x and y: the number of keypoints per class is not divisible by 2
-      TypeError: The items in override_classes need to be int
-  """
-  
-  if override_classes is None:
-      override_classes = list(range(n_class))
-  else:
-      if len(override_classes) != n_class:
-          raise ValueError(
-              "The length of override_classes list does not match the number of classes"
-          )
-      try:
-          sum(override_classes)
-      except TypeError:
-          raise TypeError("The items in override_classes need to be int")
+    try:
+        sum(datapoint_classes)
+    except TypeError:
+        raise TypeError("The items in datapoint_classes must be int")
 
-  df = __merge_json_csv(json_path, csv_path, keypoint_column_key)
-  n_point = len([col for col in df.columns if col.startswith(keypoint_column_key)])
-  if n_point % n_class != 0:
-      raise ValueError(
-          "Number of keypoints and classes mismatch: the number of keypoints is not divisible by the number of classes"
-      )
-  n_points_per_class = int(n_point / n_class)
-  if n_points_per_class % 2 != 0:
-      raise ValueError(
-          "Keypoints cannot be separated into x and y: the number of keypoints per class is not divisible by 2"
-      )
+    df = __merge_json_csv(json_path, csv_path, keypoint_column_key)
 
-  df["normalized_coords"] = df.apply(
-      lambda row: __norm_coords(row, keypoint_column_key, n_point), axis=1
-  )
+    n_keypoint = len([col for col in df.columns if col.startswith(keypoint_column_key)])
 
-  for i in range(n_class):
-      df[f"{i}_coords"] = df["normalized_coords"].apply(
-          lambda coords: coords[n_points_per_class * i : n_points_per_class * (i + 1)]
-      )
-      df[f"data_{i}"] = df[f"{i}_coords"].apply(
-          lambda x: __format_coords(x, precision)
-      )
-      df[f"{i}_bbox"] = df[f"{i}_coords"].apply(__calculate_bbox)
-      df[[f"{i}_x", f"{i}_y", f"{i}_w", f"{i}_h"]] = df.apply(
-          lambda row: __calculate_xywh(row[f"{i}_bbox"]), axis=1, result_type="expand"
-      )
+    if n_keypoint % n_keypoint_per_datapoint != 0:
+        raise ValueError(
+            "Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint"
+        )
+    n_datapoint = int(n_keypoint / n_keypoint_per_datapoint)
+    if len(datapoint_classes) != n_datapoint:
+        raise ValueError(
+            "The length of datapoint_classes must match the number of datapoint"
+        )
 
-  df.apply(
-      lambda row: __create_yolo(row, precision, root_dir, n_class, override_classes),
-      axis=1,
-  )
+    df["normalized_coords"] = df.apply(
+        lambda row: __norm_coords(row, keypoint_column_key, n_keypoint), axis=1
+    )
+
+    for i in range(n_datapoint):
+        df[f"{i}_coords"] = df["normalized_coords"].apply(
+            lambda coords: coords[n_keypoint_per_datapoint * i : n_keypoint_per_datapoint * (i + 1)]
+        )
+        df[f"data_{i}"] = df[f"{i}_coords"].apply(
+            lambda x: __format_coords(x, precision)
+        )
+        df[f"{i}_bbox"] = df[f"{i}_coords"].apply(__calculate_bbox)
+        df[[f"{i}_x", f"{i}_y", f"{i}_w", f"{i}_h"]] = df.apply(
+            lambda row: __calculate_xywh(row[f"{i}_bbox"]), axis=1, result_type="expand"
+        )
+
+    df.apply(
+        lambda row: __create_yolo(row, precision, root_dir, n_datapoint, datapoint_classes),
+        axis=1,
+    )

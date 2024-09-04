@@ -8,7 +8,7 @@ json_path = "./deeplabcut-dataset/labels.json"
 csv_path = "./deeplabcut-dataset/collected_data.csv"
 root_dir = "./deeplabcut-dataset/images/"
 
-d2y.convert(json_path, csv_path, root_dir, n_class=2)
+d2y.convert(json_path, csv_path, root_dir, datapoint_classes=[0, 1], n_keypoint_per_datapoint=30)
 ```
 
 To install deeplabcut2yolo using pip:
