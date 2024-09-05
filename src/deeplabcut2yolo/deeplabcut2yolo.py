@@ -85,7 +85,7 @@ def convert(
     n_keypoint_per_datapoint: int,
     precision: int = 6,
     keypoint_column_key: str = "dlc",
-) -> None:
+) -> pd.DataFrame:
     """Convert DeepLabCut dataset to YOLO format
 
     The root_dir argument is the path to the dataset root directory that contains training and validation
@@ -104,6 +104,8 @@ def convert(
         n_keypoint_per_datapoint (int): Number of keypoints per each datapoint
         precision (int, optional): Floating point precision. Defaults to 6.
         keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
+    Returns:
+        pd.DataFrame:
     Raises:
         ValueError: Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2
         ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint
@@ -141,7 +143,9 @@ def convert(
 
     for i in range(n_datapoint):
         df[f"{i}_coords"] = df["normalized_coords"].apply(
-            lambda coords: coords[n_keypoint_per_datapoint * i : n_keypoint_per_datapoint * (i + 1)]
+            lambda coords: coords[
+                n_keypoint_per_datapoint * i : n_keypoint_per_datapoint * (i + 1)
+            ]
         )
         df[f"data_{i}"] = df[f"{i}_coords"].apply(
             lambda x: __format_coords(x, precision)
@@ -152,6 +156,12 @@ def convert(
         )
 
     df.apply(
-        lambda row: __create_yolo(row, precision, root_dir, n_datapoint, datapoint_classes),
+        lambda row: __create_yolo(
+            row, precision, root_dir, n_datapoint, datapoint_classes
+        ),
         axis=1,
     )
+
+    df = df.drop(columns=[col for col in df.columns if col.startswith(f'{keypoint_column_key}.')])
+
+    return df
