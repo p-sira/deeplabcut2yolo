@@ -105,7 +105,7 @@ def convert(
         precision (int, optional): Floating point precision. Defaults to 6.
         keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
     Returns:
-        pd.DataFrame:
+        pd.DataFrame: DataFrame associated with the dataset
     Raises:
         ValueError: Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2
         ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint
