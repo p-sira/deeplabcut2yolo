@@ -1,6 +1,7 @@
 [project]
 name = "deeplabcut2yolo"
 authors = [{ name = "Sira Pornsiriprasert", email = "code@psira.me" }]
+maintainers = [{ name = "Sira Pornsiriprasert", email = "code@psira.me" }]
 dynamic = ["version"]
 description = "Convert DeepLabCut dataset to YOLO format"
 readme = "README.md"
@@ -15,9 +16,9 @@ classifiers = [
 dependencies = ["pandas"]
 
 [project.urls]
-Homepage = "https://gitlab.com/Psira/deeplabcut2yolo"
-Repository = "https://gitlab.com/Psira/deeplabcut2yolo"
-Issues = "https://gitlab.com/Psira/deeplabcut2yolo/-/issues"
+Homepage = "https://github.com/p-sira/deeplabcut2yolo"
+Repository = "https://github.com/p-sira/deeplabcut2yolo"
+Issues = "https://github.com/p-sira/deeplabcut2yolo/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
