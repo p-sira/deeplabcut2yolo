@@ -82,7 +82,7 @@ def convert(
     csv_path: str,
     root_dir: str,
     datapoint_classes: list[int],
-    n_keypoint_per_datapoint: int,
+    n_keypoints_per_datapoint: int,
     precision: int = 6,
     keypoint_column_key: str = "dlc",
 ) -> pd.DataFrame:
@@ -101,21 +101,21 @@ def convert(
         csv_path (str): Path to the dataset csv file
         root_dir (str): Path to the dataset root directory that contains training and validation image directories
         datapoint_classes (list[int]): A list of class id of each datapoint
-        n_keypoint_per_datapoint (int): Number of keypoints per each datapoint
+        n_keypoints_per_datapoint (int): Number of keypoints per each datapoint
         precision (int, optional): Floating point precision. Defaults to 6.
         keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
     Returns:
         pd.DataFrame: DataFrame associated with the dataset
     Raises:
-        ValueError: Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2
-        ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint
+        ValueError: Keypoints cannot be splitted into x and y: n_keypoints_per_datapoint must be divisible by 2
+        ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoints_per_datapoint
         ValueError: The length of datapoint_classes must match the number of datapoint
         TypeError: The items in datapoint_classes must be int
     """
 
-    if n_keypoint_per_datapoint % 2 != 0:
+    if n_keypoints_per_datapoint % 2 != 0:
         raise ValueError(
-            "Keypoints cannot be splitted into x and y: n_keypoint_per_datapoint must be divisible by 2"
+            "Keypoints cannot be splitted into x and y: n_keypoints_per_datapoint must be divisible by 2"
         )
 
     try:
@@ -125,26 +125,31 @@ def convert(
 
     df = __merge_json_csv(json_path, csv_path, keypoint_column_key)
 
-    n_keypoint = len([col for col in df.columns if col.startswith(keypoint_column_key)])
+    n_keypoints = len(
+        [col for col in df.columns if col.startswith(keypoint_column_key)]
+    )
 
-    if n_keypoint % n_keypoint_per_datapoint != 0:
+    if n_keypoints == 0:
+        raise ValueError(f"Specified keypoint column key {keypoint_column_key} not matched")
+    
+    if n_keypoints % n_keypoints_per_datapoint != 0:
         raise ValueError(
-            "Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoint_per_datapoint"
+            "Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoints_per_datapoint"
         )
-    n_datapoint = int(n_keypoint / n_keypoint_per_datapoint)
+    n_datapoint = int(n_keypoints / n_keypoints_per_datapoint)
     if len(datapoint_classes) != n_datapoint:
         raise ValueError(
             "The length of datapoint_classes must match the number of datapoint"
         )
 
     df["normalized_coords"] = df.apply(
-        lambda row: __norm_coords(row, keypoint_column_key, n_keypoint), axis=1
+        lambda row: __norm_coords(row, keypoint_column_key, n_keypoints), axis=1
     )
 
     for i in range(n_datapoint):
         df[f"{i}_coords"] = df["normalized_coords"].apply(
             lambda coords: coords[
-                n_keypoint_per_datapoint * i : n_keypoint_per_datapoint * (i + 1)
+                n_keypoints_per_datapoint * i : n_keypoints_per_datapoint * (i + 1)
             ]
         )
         df[f"data_{i}"] = df[f"{i}_coords"].apply(
@@ -162,6 +167,56 @@ def convert(
         axis=1,
     )
 
-    df = df.drop(columns=[col for col in df.columns if col.startswith(f'{keypoint_column_key}.')])
+    df = df.drop(
+        columns=[col for col in df.columns if col.startswith(f"{keypoint_column_key}.")]
+    )
 
     return df
+
+
+def __print_usage() -> None:
+    print(
+        "Usage: deeplabcut2yolo <json-path> <csv-path> <root-dir> <datapoint-classes> <n-keypoints-per-datapoint> [precision] [keypoint-column-key]"
+    )
+    print(
+        "Example: deeplabcut2yolo ./dlc_shuffle1_train.json ./CollectedData_dlc.csv ./labeled-data/ 01 30"
+    )
+    print(
+        "Example: deeplabcut2yolo ./dlc_shuffle1_train.json ./CollectedData_dlc.csv ./labeled-data/ 0,1,2,3,4,5,6,7,8,9,10 30 6 dlc"
+    )
+
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 6 or len(sys.argv) > 8:
+        __print_usage()
+        exit(1)
+
+    sys.argv[4] = sys.argv[4].split(",") if "," in sys.argv[4] else list(sys.argv[4])
+    try:
+        sys.argv[4] = list(map(int, sys.argv[4]))
+    except ValueError:
+        print(
+            "Datapoint classes must be integer or a list of integers separated by commas."
+        )
+        __print_usage()
+        exit(1)
+
+    try:
+        sys.argv[5] = int(sys.argv[5])
+    except ValueError:
+        print("Number of keypoints per datapoints must be integer.")
+        __print_usage()
+        exit(1)
+
+    if len(sys.argv) > 6:
+        try:
+            sys.argv[6] = int(sys.argv[6])
+        except ValueError:
+            print("Precision must be integer.")
+            __print_usage()
+            exit(1)
+            
+    convert(*sys.argv)
+    print("Successfully converted deeplabcut2yolo.")
