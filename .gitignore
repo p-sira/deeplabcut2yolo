@@ -1,4 +1,5 @@
 .venv
 dist
 build
-src/deeplabcut2yolo.egg-info
+deeplabcut2yolo.egg-info
+__pycache__

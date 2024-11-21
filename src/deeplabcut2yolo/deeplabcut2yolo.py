@@ -1,222 +1,251 @@
 # deeplabcut2yolo is licensed under GNU General Public License v3.0, see LICENSE.
 # Copyright 2024 Sira Pornsiriprasert <code@psira.me>
 
-import json
-import pandas as pd
+import pickle
+import warnings
+from pathlib import Path
+
+import numpy as np
+import numpy.typing as npt
+import yaml
+
+from .skeleton import get_flip_idx
 
 
-def __merge_json_csv(json_path, csv_path, key) -> pd.DataFrame:
-    with open(json_path, "r") as f:
-        data_json = json.load(f)
-
-    df_json = pd.DataFrame(data_json["images"])
-    df_csv = pd.read_csv(csv_path).rename(
-        columns={"scorer": "file_name", key: f"{key}.0"}
-    )
-    df_csv.file_name = df_csv.file_name.apply(lambda x: "_".join(x.split("/")[1:]))
-    return pd.merge(df_json, df_csv, on=["file_name"])
+def _v_print(verbose, *args, **kwargs):
+    if verbose:
+        print(*args, **kwargs)
 
 
-def __norm_coords(row, key, count) -> list:
-    normalized = []
-    for i in range(0, count, 2):
-        px = (
-            max(0, min(1, float(row[f"{key}.{i}"]) / row["width"]))
-            if not pd.isna(row[f"{key}.{i}"])
-            else None
+def _detect_paths(
+    root_dir: Path,
+    pickle_path: str | Path | None = None,
+    config_path: str | Path | None = None,
+) -> tuple[Path, Path]:
+    if pickle_path is None:
+        potential_paths = [
+            path
+            for path in root_dir.glob("*/iteration*/*/*shuffle*.pickle")
+            if "Documentation" not in str(path)
+        ]
+        if len(potential_paths) < 1:
+            raise FileNotFoundError(
+                "Pickle file not found. Use the parameter pickle_path to specify the path."
+            )
+        if len(potential_paths) > 1:
+            raise ValueError(
+                f"Multiple potential pickle files found: {list(map(str, potential_paths))}. Use the parameter pickle_path to specify the path."
+            )
+        data_path = potential_paths[0]
+    else:
+        data_path = Path(pickle_path)
+
+    if config_path is None:
+        config_path = root_dir / "config.yaml"
+        if not config_path.is_file():
+            raise FileNotFoundError(
+                "Config file not found. Use the parameter config_path to specify the path."
+            )
+    else:
+        config_path = Path(config_path)
+
+    return data_path, config_path
+
+
+def _format_skeleton_indices(
+    skeleton: list[list[str]], keypoints: list[str]
+) -> list[list[int]]:
+    joints = np.array(skeleton)  # type: ignore
+    for i, keypoint in enumerate(keypoints):
+        joints[joints == keypoint] = i
+    try:
+        return joints.astype(int).tolist()
+    except ValueError as e:
+        raise KeyError(f"Skeleton joint not found in the config body parts: {e}")
+
+
+def _extract_config(config_path: Path) -> tuple[int, int, list[list[int]]]:
+    with open(config_path) as f:
+        try:
+            config = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            raise yaml.YAMLError(f"Invalid config YAML file format\n{e}")
+
+    try:
+        # Use multianimalbodyparts. Some dataset bodyparts contains class specific parts
+        keypoints = config["multianimalbodyparts"]
+        n_keypoints = len(keypoints)
+        n_classes = len(config["individuals"])
+        skeleton = config["skeleton"]
+    except KeyError as e:
+        raise KeyError(f"Invalid config.yaml structure\n{e}")
+
+    skeleton = _format_skeleton_indices(skeleton, keypoints)
+
+    return n_classes, n_keypoints, skeleton
+
+
+def _load_data(data_path: Path) -> list:
+    with open(data_path, "rb") as f, warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+        data = pickle.load(f)
+
+    if isinstance(data, list):
+        return data
+    else:
+        raise TypeError(
+            f"Invalid pickle file object {type(data)} expecting <class 'list'>"
         )
-        py = (
-            max(0, min(1, float(row[f"{key}.{i+1}"]) / row["height"]))
-            if not pd.isna(row[f"{key}.{i+1}"])
-            else None
-        )
-        normalized.extend([px, py])
-    return normalized
 
 
-def __calculate_bbox(coords):
-    valid_coords = [
-        (x, y)
-        for x, y in zip(coords[::2], coords[1::2])
-        if x is not None and y is not None
-    ]
-    if not valid_coords:
-        return None
-    xs, ys = zip(*valid_coords)
-    return [min(xs), min(ys), max(xs), max(ys)]
-
-
-def __calculate_xywh(bbox):
-    if bbox is None:
-        return [0] * 4
-    x = (bbox[0] + bbox[2]) / 2
-    y = (bbox[1] + bbox[3]) / 2
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    return [x, y, w, h]
-
-
-def __format_coords(coords, precision):
+def _extract_datapoints(
+    joint_dict: dict, n_keypoints: int, class_lookup: tuple[int, ...]
+) -> tuple[npt.NDArray[np.floating], list]:
     """
-    Format the coords into a string of <px0> <py0> <visibility0> <px1> <py1> <visibility1> ...
+    Extract the coords from DeepLabCut pickle where they are a dict with the class index as the key.
+    The values of the dict are the arrays of keypoints (n_visible x 3) in the format joint_idx, x, y.
+    Joints that aren't visible are skipped in the array.
+
+    Return a tuple of an array of coords (n_visible_classes x n_keypoints x 2) and a list of class indices.
     """
-    out = ""
-    for i in range(0, len(coords), 2):
-        if coords[i] is None or coords[i + 1] is None:
-            out += "0 0 0 "
-        else:
-            out += f"{coords[i]:.{precision}f} {coords[i+1]:.{precision}f} 1 "
-    return out
+    n_classes = len(joint_dict)  # Number of visible classes
+    classes = []
+    coords = np.zeros((n_classes, n_keypoints, 3))
+    for i, (class_idx, class_joints) in enumerate(joint_dict.items()):
+        visible_idx = class_joints[:, 0].astype(int)
+        visible_coords = class_joints[:, 1:3]
+        coords[i, visible_idx, :2] = visible_coords
+        coords[i, visible_idx, 2] = 1
+        classes.append(class_lookup[class_idx])
+    return coords, classes
 
 
-def __create_yolo(row, precision, root_dir, n_datapoint, datapoint_classes):
-    out = ""
-    for i in range(n_datapoint):
-        out += f"{datapoint_classes[i]} {row[f'{i}_x']:.{precision}f} {row[f'{i}_y']:.{precision}f} {row[f'{i}_w']:.{precision}f} {row[f'{i}_h']:.{precision}f} {row[f'data_{i}']}\n"
-    with open(root_dir + "/".join(row["file_name"][:-4].split("_")) + ".txt", "w") as f:
-        f.write(out)
+def _normalize_coords(
+    coords: npt.NDArray[np.floating], size_x: float, size_y: float
+) -> npt.NDArray[np.floating]:
+    coords[:, :, 0] /= size_x
+    coords[:, :, 1] /= size_y
+    return coords
+
+
+def _calculate_bbox(coords: npt.NDArray[np.floating]):
+    X = coords[:, :, 0]
+    Y = coords[:, :, 1]
+    min_x = np.min(X, axis=1)
+    max_x = np.max(X, axis=1)
+    min_y = np.min(Y, axis=1)
+    max_y = np.max(Y, axis=1)
+
+    bbox_x = (min_x + max_x) / 2
+    bbox_y = (min_y + max_y) / 2
+    bbox_w = max_x - min_x
+    bbox_h = max_y - min_y
+    return (bbox_x, bbox_y, bbox_w, bbox_h)
 
 
 def convert(
-    json_path: str,
-    csv_path: str,
-    root_dir: str,
-    datapoint_classes: list[int],
-    n_keypoints_per_datapoint: int,
+    dataset_path: str | Path,
+    pickle_path: str | Path | None = None,
+    config_path: str | Path | None = None,
     precision: int = 6,
-    keypoint_column_key: str = "dlc",
-) -> pd.DataFrame:
+    override_classes: list[int] | str | None = None,
+    verbose: bool = False,
+) -> tuple[Path, int, int, list[list[int]]]:
     """Convert DeepLabCut dataset to YOLO format
 
-    The root_dir argument is the path to the dataset root directory that contains training and validation
-    image directories as labeled in the file_name column in the json file. For example, data from the file_name
-    column, training-images_img00001.png and valid-images_img001.png, the root directory would be "./dataset/", where
-    it contains subdirectories ./dataset/training-images/ and ./dataset/valid-images/
-
-    keypoint_column_key is the column name prefix of the keypoints in the csv. For example, if all the keypoints
-    column are named "dlc", then use "dlc" as the parameter.
+    DeepLabCut labels can be found in the pickled label file, the CollectedData CSV,
+    the CollectedData HDF (.h5) in the dataset iteration directory and in the image directories.
+    They consists of the datapoint classes, keypoint IDs and their coordinates.
+    
+    The YOLO format requires the class IDs, their bounding box positions (x, y) and dimensions (w, h), 
+    and the keypoints (px, py, visibility). These data need to be normalized.  
 
     Args:
-        json_path (str): Path to the dataset json file
-        csv_path (str): Path to the dataset csv file
-        root_dir (str): Path to the dataset root directory that contains training and validation image directories
-        datapoint_classes (list[int]): A list of class id of each datapoint
-        n_keypoints_per_datapoint (int): Number of keypoints per each datapoint
-        precision (int, optional): Floating point precision. Defaults to 6.
-        keypoint_column_key (str, optional): The column name prefix of the keypoints in the csv. Defaults to "dlc".
+        dataset_path (str | Path): Path to the dataset root directory
+        pickle_path (str | Path | None, optional): Path to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
+        config_path (str | Path | None, optional): Path to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
+        precision (int, optional): The number of decimals of the converted label. Defaults to 6.
+        override_classes (list[int] | str | None, optional): Overriding class IDs to map from the original dataset class IDs. For example, the original classes are 0, 1, and 2. To override 0 and 1 to class 0 and 2 to class 1, this argument will be [0, 0, 1] in the list format or "001" in the string format. Defaults to None.
+        verbose (bool, optional): Print the conversion information and status. If set to true, you can optionally install tqdm to enabele progress bar. Defaults to False.
+
     Returns:
-        pd.DataFrame: DataFrame associated with the dataset
-    Raises:
-        ValueError: Keypoints cannot be splitted into x and y: n_keypoints_per_datapoint must be divisible by 2
-        ValueError: Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoints_per_datapoint
-        ValueError: The length of datapoint_classes must match the number of datapoint
-        TypeError: The items in datapoint_classes must be int
+        tuple[Path, int, int, list[list[int]]]: root_dir, n_classes, n_keypoints, skeleton; Can be left unused.
     """
+    # The dataset dir is usually nested. This code handles entering the inner one
+    # despite the user input.
+    root_dir = Path(dataset_path)
+    if (root_dir / root_dir.name).is_dir():
+        root_dir /= root_dir.name
 
-    if n_keypoints_per_datapoint % 2 != 0:
-        raise ValueError(
-            "Keypoints cannot be splitted into x and y: n_keypoints_per_datapoint must be divisible by 2"
+    _v_print(verbose, "Converting DeepLabCut2YOLO")
+    data_path, config_path = _detect_paths(root_dir, pickle_path)
+    _v_print(verbose, f"Found pickled labels: {data_path}")
+    _v_print(verbose, f"Found config file: {config_path}")
+    n_classes, n_keypoints, skeleton = _extract_config(config_path)
+    # Skeleton data from DeepLabCut is unreliable, the joints don't connect correctly.
+    # Once fixed, I will implement automatic flip index generation algorithm.
+
+    if override_classes is not None:
+        if len(override_classes) != n_classes:
+            raise ValueError(
+                "The length of override_classes must be equal to dataset's original number of classes."
+            )
+
+        # String override_classes
+        if isinstance(override_classes, str):
+            try:
+                class_lookup = tuple(map(int, override_classes))
+            except ValueError:
+                raise ValueError(
+                    "The override_classes string must be a string of integers."
+                )
+        # List override_classes
+        else:
+            class_lookup = tuple(override_classes)
+    # None override_classes
+    else:
+        class_lookup = tuple(range(n_classes))
+
+    data = _load_data(data_path)
+
+    # Progress bar if verbose=True and tqdm module is present
+    data_iterator = data
+    if verbose:
+        try:
+            from tqdm import tqdm  # type: ignore
+
+            data_iterator = tqdm(data, desc="Converting label data")
+        except ModuleNotFoundError:
+            pass
+
+    for image in data_iterator:
+        file_path = (root_dir / image["image"]).with_suffix(".txt")
+        coords, classes = _extract_datapoints(
+            image["joints"], n_keypoints, class_lookup
         )
+        # The image size in deeplabcut is h*w
+        size_y = image["size"][1]
+        size_x = image["size"][2]
+        normalized_coords = _normalize_coords(coords, size_x, size_y)
+        bbox_x, bbox_y, bbox_w, bbox_h = _calculate_bbox(normalized_coords)
 
-    try:
-        sum(datapoint_classes)
-    except TypeError:
-        raise TypeError("The items in datapoint_classes must be int")
-
-    df = __merge_json_csv(json_path, csv_path, keypoint_column_key)
-
-    n_keypoints = len(
-        [col for col in df.columns if col.startswith(keypoint_column_key)]
-    )
-
-    if n_keypoints == 0:
-        raise ValueError(f"Specified keypoint column key {keypoint_column_key} not matched")
-    
-    if n_keypoints % n_keypoints_per_datapoint != 0:
-        raise ValueError(
-            "Keypoints cannot be splitted into datapoints: the total number of keypoints must be divisible by the n_keypoints_per_datapoint"
-        )
-    n_datapoint = int(n_keypoints / n_keypoints_per_datapoint)
-    if len(datapoint_classes) != n_datapoint:
-        raise ValueError(
-            "The length of datapoint_classes must match the number of datapoint"
-        )
-
-    df["normalized_coords"] = df.apply(
-        lambda row: __norm_coords(row, keypoint_column_key, n_keypoints), axis=1
-    )
-
-    for i in range(n_datapoint):
-        df[f"{i}_coords"] = df["normalized_coords"].apply(
-            lambda coords: coords[
-                n_keypoints_per_datapoint * i : n_keypoints_per_datapoint * (i + 1)
+        yolo_string = "\n".join(
+            [
+                f"{data_class} {bx:.{precision}f} {by:.{precision}f} {bw:.{precision}f} {bh:.{precision}f} {' '.join([f'{x:.{precision}f} {y:.{precision}f} {int(vis)}' for x, y, vis in normalized_coords[i]])}"
+                for i, (data_class, bx, by, bw, bh) in enumerate(
+                    zip(classes, bbox_x, bbox_y, bbox_w, bbox_h)
+                )
             ]
         )
-        df[f"data_{i}"] = df[f"{i}_coords"].apply(
-            lambda x: __format_coords(x, precision)
-        )
-        df[f"{i}_bbox"] = df[f"{i}_coords"].apply(__calculate_bbox)
-        df[[f"{i}_x", f"{i}_y", f"{i}_w", f"{i}_h"]] = df.apply(
-            lambda row: __calculate_xywh(row[f"{i}_bbox"]), axis=1, result_type="expand"
-        )
 
-    df.apply(
-        lambda row: __create_yolo(
-            row, precision, root_dir, n_datapoint, datapoint_classes
-        ),
-        axis=1,
-    )
+        with open(file_path, "w") as f:
+            f.write(yolo_string)
 
-    df = df.drop(
-        columns=[col for col in df.columns if col.startswith(f"{keypoint_column_key}.")]
-    )
+    _v_print(verbose, "Conversion completed!")
 
-    return df
+    return root_dir, n_classes, n_keypoints, skeleton
 
 
-def __print_usage() -> None:
-    print(
-        "Usage: deeplabcut2yolo <json-path> <csv-path> <root-dir> <datapoint-classes> <n-keypoints-per-datapoint> [precision] [keypoint-column-key]"
-    )
-    print(
-        "Example: deeplabcut2yolo ./dlc_shuffle1_train.json ./CollectedData_dlc.csv ./labeled-data/ 01 30"
-    )
-    print(
-        "Example: deeplabcut2yolo ./dlc_shuffle1_train.json ./CollectedData_dlc.csv ./labeled-data/ 0,1,2,3,4,5,6,7,8,9,10 30 6 dlc"
-    )
-
-
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) < 6 or len(sys.argv) > 8:
-        __print_usage()
-        exit(1)
-
-    sys.argv[4] = sys.argv[4].split(",") if "," in sys.argv[4] else list(sys.argv[4])
-    try:
-        sys.argv[4] = list(map(int, sys.argv[4]))
-    except ValueError:
-        print(
-            "Datapoint classes must be integer or a list of integers separated by commas."
-        )
-        __print_usage()
-        exit(1)
-
-    try:
-        sys.argv[5] = int(sys.argv[5])
-    except ValueError:
-        print("Number of keypoints per datapoints must be integer.")
-        __print_usage()
-        exit(1)
-
-    if len(sys.argv) > 6:
-        try:
-            sys.argv[6] = int(sys.argv[6])
-        except ValueError:
-            print("Precision must be integer.")
-            __print_usage()
-            exit(1)
-            
-    convert(*sys.argv)
-    print("Successfully converted deeplabcut2yolo.")
+def _create_data_yml(output_path, **kwargs):
+    with open(output_path, "w") as f:
+        yaml.dump(kwargs, f, sort_keys=False)
