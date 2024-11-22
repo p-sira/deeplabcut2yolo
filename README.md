@@ -34,6 +34,7 @@ please cite using the following APA-style reference
 > Pornsiriprasert, S. (2024). *Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format* (Version 2.0) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/
 
 or this BibTeX entry.
+
 ```
 @software{deeplabcut2yolo,
     author = {{Pornsiriprasert, S}},
