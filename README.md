@@ -24,7 +24,11 @@ See example in the examples/ directory.
 
 ## Citation
 Citation is not required but is greatly appreciated. If this project helps you, 
-please cite using the following BibTex entry.
+please cite using the following APA-style reference
+```
+Sira Pornsiriprasert. (2024). deeplabcut2yolo (Version 2.0). Retrieved from https://github.com/p-sira/deeplabcut2yolo/
+```
+or this BibTeX entry.
 ```
 @software{deeplabcut2yolo,
     author = {{Sira Pornsiriprasert}},
