@@ -1,5 +1,14 @@
 # deeplabcut2yolo Change Log
 
+## 2.1
+**New Features**
+- convert() can convert single or multiple datasets
+- convert() can help generate data.yml for YOLO model
+- Added get_flip_idx() function
+
+**Bug Fix**
+- Fix deeplabcut2yolo module docstring
+
 ## 2.0
 **Performance**
 - Vectorization of convert()

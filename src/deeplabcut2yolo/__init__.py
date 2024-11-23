@@ -5,8 +5,8 @@
 Convert DeepLabCut dataset to YOLO format
 
 Quick Start:
-- deeplabcut2yolo.convert(json_path, csv_path, root_dir, datapoint_classes=[0, 1], n_keypoint_per_datapoint=30)
-- deeplabcut2yolo.convert(json_path, csv_path, root_dir, datapoint_classes=[0, 0], n_keypoint_per_datapoint=30)
+- d2y.convert("./deeplabcut-dataset/")
+- d2y.convert("./deeplabcut-dataset/", train_paths, val_paths, skeleton_symmetric_pairs, data_yml_path)
 
 ============
 
@@ -29,4 +29,5 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from .__about__ import *
 from .deeplabcut2yolo import (
     convert,
+    get_flip_idx,
 )
