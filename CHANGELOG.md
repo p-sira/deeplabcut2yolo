@@ -1,5 +1,20 @@
 # deeplabcut2yolo Change Log
 
+## 2.2
+**Functionality**
+- convert() no longer takes test_paths as they are not used in YOLO data.yml.
+- convert() no longer takes list of dataset paths as there is not much use case.
+- convert() now extract class names from dataset config as the default.
+- Added a few argument checkers for convert().
+
+**Performance**
+- Minor improvement by reimplementing some argument checking.
+
+**Others**
+- Removed unused internal functions
+- Added docstring for get_flip_idx()
+- Reduced package size
+
 ## 2.1
 **New Features**
 - convert() can convert single or multiple datasets

@@ -4,7 +4,6 @@
 import pickle
 import warnings
 from pathlib import Path
-from typing import cast
 
 import numpy as np
 import numpy.typing as npt
@@ -16,15 +15,11 @@ def __v_print(verbose, *args, **kwargs):
         print(*args, **kwargs)
 
 
-def __to_path_list(paths: list[Path] | list[str] | Path | str) -> list[Path]:
-    return list(map(Path, paths)) if isinstance(paths, list) else [Path(paths)]
-
-
 def __to_str_path_list(paths: list[Path] | list[str] | Path | str) -> list[str]:
     return list(map(str, paths)) if isinstance(paths, list) else [str(paths)]
 
 
-def __check_dirs_exist(paths: list[Path] | list[str]):
+def __check_str_dirs_exist(paths: list[str]):
     for path in paths:
         path = Path(path)
         if not path.is_dir():
@@ -66,19 +61,7 @@ def _detect_paths(
     return data_path, config_path
 
 
-def _format_skeleton_indices(
-    skeleton: list[list[str]], keypoints: list[str]
-) -> list[list[int]]:
-    joints = np.array(skeleton)  # type: ignore
-    for i, keypoint in enumerate(keypoints):
-        joints[joints == keypoint] = i
-    try:
-        return joints.astype(int).tolist()
-    except ValueError as e:
-        raise KeyError(f"Skeleton joint not found in the config body parts: {e}")
-
-
-def _extract_config(config_path: Path) -> tuple[int, int, list[list[int]]]:
+def _extract_config(config_path: Path) -> tuple[int, list[str], list[str], int]:
     with open(config_path) as f:
         try:
             config = yaml.safe_load(f)
@@ -89,14 +72,12 @@ def _extract_config(config_path: Path) -> tuple[int, int, list[list[int]]]:
         # Use multianimalbodyparts. Some dataset bodyparts contains class specific parts
         keypoints = config["multianimalbodyparts"]
         n_keypoints = len(keypoints)
-        n_classes = len(config["individuals"])
-        skeleton = config["skeleton"]
+        class_names = config["individuals"]
+        n_classes = len(class_names)
     except KeyError as e:
         raise KeyError(f"Invalid config.yaml structure\n{e}")
 
-    skeleton = _format_skeleton_indices(skeleton, keypoints)
-
-    return n_classes, n_keypoints, skeleton
+    return n_classes, class_names, keypoints, n_keypoints
 
 
 def _create_data_yml(output_path: str | Path, **kwargs) -> None:
@@ -162,20 +143,28 @@ def _calculate_bbox(coords: npt.NDArray[np.floating]):
     return (bbox_x, bbox_y, bbox_w, bbox_h)
 
 
-def get_flip_idx(n_classes: int, symmetric_pairs: list[tuple[int, int]]) -> list[int]:
-    flip_idx = list(range(n_classes))
+def get_flip_idx(n_keypoints: int, symmetric_pairs: list[tuple[int, int]]) -> list[int]:
+    """Get a list of flip indices.
+
+    Args:
+        n_keypoints (int): Number of keypoints.
+        symmetric_pairs (list[tuple[int, int]]): Pairs of keypoint indices to swap
+
+    Returns:
+        list[int]: List of flip indices
+    """    
+    flip_idx = list(range(n_keypoints))
     for a, b in symmetric_pairs:
         flip_idx[a], flip_idx[b] = flip_idx[b], flip_idx[a]
     return flip_idx
 
 
 def convert(
-    dataset_paths: list[Path] | list[str] | Path | str,
-    pickle_paths: list[Path] | list[str] | Path | str | None = None,
-    config_paths: list[Path] | list[str] | Path | str | None = None,
+    dataset_path: Path | str,
+    pickle_path: Path | str | None = None,
+    config_path: Path | str | None = None,
     train_paths: list[Path] | list[str] | Path | str | None = None,
     val_paths: list[Path] | list[str] | Path | str | None = None,
-    test_paths: list[Path] | list[str] | Path | str | None = None,
     data_yml_path: Path | str | None = None,
     skeleton_symmetric_pairs: list[tuple[int, int]] | None = None,
     override_classes: list[int] | str | None = None,
@@ -196,12 +185,11 @@ def convert(
     and the keypoints (px, py, visibility). These data need to be normalized.
 
     Args:
-        dataset_paths (list[Path] | list[str] | Path | str): Path(s) to the dataset root directory
-        pickle_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
-        config_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
+        dataset_path (Path | str): Path to the dataset root directory
+        pickle_path (Path | str | None, optional): Path to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
+        config_path (Path | str | None, optional): Path to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
         train_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the training directories. Required when specifying data_yml_path. Defaults to None.
         val_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the validation directories. Required when specifying data_yml_path. Defaults to None.
-        test_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the test directories. Defaults to None.
         data_yml_path (Path | str | None, optional): Path to create the data.yml file. Leaving the parameter as None will not create the data.yml file. Defaults to None.
         skeleton_symmetric_pairs (list[tuple[int, int]] | None, optional): A list of symmetric keypoint indices. For example, with head=0, left_eye=1, right_eye=2, and body=3, the skeleton_symmetric_pairs will be [(1, 2)]. YOLO performs better when symmetric pairs are appropriately defined. Leave as None if there is no symmetric pair. Defaults to None.
         override_classes (list[int] | str | None, optional): Overriding class IDs to map from the original dataset class IDs. For example, the original classes are 0, 1, and 2. To override 0 and 1 to class 0 and 2 to class 1, this argument will be [0, 0, 1] in the list format or "001" in the string format. Defaults to None.
@@ -210,23 +198,7 @@ def convert(
         verbose (bool, optional): Print the conversion information and status. If set to true, you can optionally install tqdm to enabele progress bar. Defaults to False.
     """
     # Argument validation and preparation
-    dataset_paths = __to_path_list(dataset_paths)
-
-    n_datasets = len(dataset_paths)
-    _pickle_paths = (
-        [None] * n_datasets if pickle_paths is None else __to_path_list(pickle_paths)
-    )
-    _config_paths = (
-        [None] * n_datasets if config_paths is None else __to_path_list(config_paths)
-    )
-    if n_datasets != len(_pickle_paths):
-        raise ValueError(
-            "Number of items in pickle_paths must be equal to dataset_paths."
-        )
-    if n_datasets != len(_config_paths):
-        raise ValueError(
-            "Number of items in config_paths must be equal to dataset_paths."
-        )
+    dataset_path = Path(dataset_path)
 
     if data_yml_path is not None:
         if train_paths is None:
@@ -242,77 +214,55 @@ def convert(
         # train, val, and test paths use __to_str_path_list to facilitate dumping data to data.yml without having to map(str, ...)
         train_paths = __to_str_path_list(train_paths)
         val_paths = __to_str_path_list(val_paths)
-        __check_dirs_exist(train_paths)
-        __check_dirs_exist(val_paths)
+        __check_str_dirs_exist(train_paths)
+        __check_str_dirs_exist(val_paths)
 
-        if test_paths is not None:
-            test_paths = __to_str_path_list(test_paths)
-            __check_dirs_exist(test_paths)
-
-    #  Directory structures detection
     __v_print(verbose, "DeepLabCut2YOLO\n")
-    __v_print(verbose, "Detecting dataset directories...")
-    data_paths = []
-    n_classes, n_keypoints, skeleton = None, None, None
-    for i, (dataset_path, pickle_path, config_path) in enumerate(
-        zip(dataset_paths, _pickle_paths, _config_paths)
-    ):
-        __v_print(verbose, f"Dataset {i+1}/{n_datasets}: {dataset_path}")
-        data_path, config_path = _detect_paths(dataset_path, pickle_path, config_path)
-        data_paths.append(data_path)
-        __v_print(verbose, f"Found pickled labels: {data_path}")
-        __v_print(verbose, f"Found config file: {config_path}")
-        temp_n_classes, temp_n_keypoints, temp_skeleton = _extract_config(config_path)
-        if n_classes is None:
-            n_classes, n_keypoints, skeleton = (
-                temp_n_classes,
-                temp_n_keypoints,
-                temp_skeleton,
-            )
-        elif (n_classes, n_keypoints, skeleton) != (
-            temp_n_classes,
-            temp_n_keypoints,
-            temp_skeleton,
-        ):
-            raise ValueError(
-                "Configs of the datasets do not match. Check the config.yaml number of classes (individuals), number of keypoints (multianimalbodyparts), and skeleton."
-            )
-    n_classes, n_keypoints, skeleton = cast(
-        tuple[int, int, int], (n_classes, n_keypoints, skeleton)
+    __v_print(verbose, f"Dataset path: {dataset_path}")
+    data_path, config_path = _detect_paths(dataset_path, pickle_path, config_path)
+    __v_print(verbose, f"Found pickled labels: {data_path}")
+    __v_print(verbose, f"Found config file: {config_path}")
+    config_n_classes, config_class_names, keypoints, n_keypoints = _extract_config(
+        config_path
     )
+    __v_print(verbose, f"  nc: {config_n_classes}")
+    __v_print(verbose, f"  names: {config_class_names}")
+    __v_print(verbose, f"  kpt: {keypoints}")
+    __v_print(verbose, f"  kpt_shape: [{n_keypoints}, 3]")
 
-    # Prepare variables after obtaining the config
+    class_lookup = range(config_n_classes)
+    # Override class indices
     if override_classes is not None:
-        if len(override_classes) != n_classes:
+        if len(override_classes) != config_n_classes:
             raise ValueError(
                 "The length of override_classes must be equal to dataset's original number of classes."
             )
 
-        # String override_classes
         if isinstance(override_classes, str):
             try:
-                class_lookup = tuple(map(int, override_classes))
+                class_lookup = map(int, override_classes)
             except ValueError:
                 raise ValueError(
                     "The override_classes string must be a string of integers."
                 )
-        # List override_classes
-        else:
-            class_lookup = tuple(override_classes)
-    # None override_classes
-    else:
-        class_lookup = tuple(range(n_classes))
+                
+        __v_print(verbose, f"Overrided class indices with: {tuple(class_lookup)}")
 
-    unique_classes = list(map(str, dict.fromkeys(class_lookup)))
-    n_unique_classes = len(unique_classes)
+    class_lookup = tuple(class_lookup)
+    unique_classes = list(
+        dict.fromkeys(class_lookup).keys()
+    )  # Like set but preserves the order
+    n_classes = len(unique_classes)
 
     if class_names is None:
-        class_names = unique_classes
+        class_names = list(range(n_classes))
 
-    if len(class_names) != n_unique_classes:
+    if len(unique_classes) != len(class_names):
         raise ValueError(
-            "The number of provided class names must be equal to the number of dataset classes or unique classes in override_classes."
+            "The number of class_names must be equal to the number of dataset classes or unique classes in override_classes."
         )
+
+    dict_idx_class_name = dict(zip(unique_classes, class_names))
 
     # Create data.yml
     if data_yml_path is not None:
@@ -321,15 +271,14 @@ def convert(
             "path": str(Path.cwd()),
             "train": train_paths,
             "val": val_paths,
-            "test": test_paths,
             "kpt_shape": [n_keypoints, 3],
             "flip_idx": (
                 get_flip_idx(n_keypoints, skeleton_symmetric_pairs)
                 if skeleton_symmetric_pairs is not None
                 else list(range(n_keypoints))
             ),
-            "nc": n_unique_classes,
-            "names": class_names,
+            "nc": n_classes,
+            "names": dict_idx_class_name,
         }
         # Skeleton data from DeepLabCut is unreliable, the joints don't connect correctly.
         # Once fixed, I will implement automatic flip index generation algorithm.
@@ -349,38 +298,32 @@ def convert(
         except ModuleNotFoundError:
             pass
 
-    # Begin converting DLC labels to YOLO format
+    # Converting DLC labels to YOLO format
     __v_print(verbose, "Converting labels...")
-    for i, (dataset_path, data_path) in enumerate(zip(dataset_paths, data_paths)):
-        data = _load_data(data_path)
+    data = _load_data(data_path)
 
-        data_iterator = (
-            tqdm(data, desc=f"Converting dataset ({i}/{len(data_paths)})")  # type: ignore
-            if progress_bar
-            else data
+    data_iterator = tqdm(data) if progress_bar else data  # type: ignore
+    for image in data_iterator:
+        file_path = (dataset_path / image["image"]).with_suffix(".txt")
+        coords, classes = _extract_datapoints(
+            image["joints"], n_keypoints, class_lookup
+        )
+        # The image size in deeplabcut is h*w
+        size_y = image["size"][1]
+        size_x = image["size"][2]
+        normalized_coords = _normalize_coords(coords, size_x, size_y)
+        bbox_x, bbox_y, bbox_w, bbox_h = _calculate_bbox(normalized_coords)
+
+        yolo_string = "\n".join(
+            [
+                f"{data_class} {bx:.{precision}f} {by:.{precision}f} {bw:.{precision}f} {bh:.{precision}f} {' '.join([f'{x:.{precision}f} {y:.{precision}f} {int(vis)}' for x, y, vis in normalized_coords[i]])}"
+                for i, (data_class, bx, by, bw, bh) in enumerate(
+                    zip(classes, bbox_x, bbox_y, bbox_w, bbox_h)
+                )
+            ]
         )
 
-        for image in data_iterator:
-            file_path = (dataset_path / image["image"]).with_suffix(".txt")
-            coords, classes = _extract_datapoints(
-                image["joints"], n_keypoints, class_lookup
-            )
-            # The image size in deeplabcut is h*w
-            size_y = image["size"][1]
-            size_x = image["size"][2]
-            normalized_coords = _normalize_coords(coords, size_x, size_y)
-            bbox_x, bbox_y, bbox_w, bbox_h = _calculate_bbox(normalized_coords)
-
-            yolo_string = "\n".join(
-                [
-                    f"{data_class} {bx:.{precision}f} {by:.{precision}f} {bw:.{precision}f} {bh:.{precision}f} {' '.join([f'{x:.{precision}f} {y:.{precision}f} {int(vis)}' for x, y, vis in normalized_coords[i]])}"
-                    for i, (data_class, bx, by, bw, bh) in enumerate(
-                        zip(classes, bbox_x, bbox_y, bbox_w, bbox_h)
-                    )
-                ]
-            )
-
-            with open(file_path, "w") as f:
-                f.write(yolo_string)
+        with open(file_path, "w") as f:
+            f.write(yolo_string)
 
     __v_print(verbose, "\nConversion completed!")
