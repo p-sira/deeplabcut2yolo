@@ -1,6 +1,10 @@
 # deeplabcut2yolo Change Log
 
-## 2.2.1
+### 2.2.2
+**Bug Fix**
+- Override class names should work with str and list[int]
+
+### 2.2.1
 **Bug Fix**
 - Default class names are correctly defined
 
@@ -39,7 +43,7 @@
 **Functionality**
 - No more dependency on pandas. Added numpy and pyyaml dependency.
 
-## 1.1.1
+### 1.1.1
 **Functionality**
 - Return DataFrame when using convert()
 
