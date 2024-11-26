@@ -152,7 +152,7 @@ def get_flip_idx(n_keypoints: int, symmetric_pairs: list[tuple[int, int]]) -> li
 
     Returns:
         list[int]: List of flip indices
-    """    
+    """
     flip_idx = list(range(n_keypoints))
     for a, b in symmetric_pairs:
         flip_idx[a], flip_idx[b] = flip_idx[b], flip_idx[a]
@@ -245,7 +245,7 @@ def convert(
                 raise ValueError(
                     "The override_classes string must be a string of integers."
                 )
-                
+
         __v_print(verbose, f"Overrided class indices with: {tuple(class_lookup)}")
 
     class_lookup = tuple(class_lookup)
