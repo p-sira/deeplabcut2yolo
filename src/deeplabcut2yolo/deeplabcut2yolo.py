@@ -2,6 +2,7 @@
 # Copyright 2024 Sira Pornsiriprasert <code@psira.me>
 
 import pickle
+from typing import cast
 import warnings
 from pathlib import Path
 
@@ -226,13 +227,17 @@ def convert(
         config_path
     )
     __v_print(verbose, f"  nc: {config_n_classes}")
-    __v_print(verbose, f"  names: {config_class_names}")
+    __v_print(
+        verbose, f"  names: {dict(zip(range(config_n_classes), config_class_names))}"
+    )
     __v_print(verbose, f"  kpt: {keypoints}")
     __v_print(verbose, f"  kpt_shape: [{n_keypoints}, 3]")
 
     class_lookup = range(config_n_classes)
     # Override class indices
     if override_classes is not None:
+        class_lookup = tuple(override_classes)
+
         if len(override_classes) != config_n_classes:
             raise ValueError(
                 "The length of override_classes must be equal to dataset's original number of classes."
@@ -240,22 +245,22 @@ def convert(
 
         if isinstance(override_classes, str):
             try:
-                class_lookup = map(int, override_classes)
+                class_lookup = tuple(map(int, class_lookup))
             except ValueError:
                 raise ValueError(
                     "The override_classes string must be a string of integers."
                 )
 
-        __v_print(verbose, f"Overrided class indices with: {tuple(class_lookup)}")
+        __v_print(verbose, f"Overrided class indices with: {class_lookup}")
 
-    class_lookup = tuple(class_lookup)
+    class_lookup = cast(tuple, tuple(class_lookup))
     unique_classes = list(
         dict.fromkeys(class_lookup).keys()
     )  # Like set but preserves the order
     n_classes = len(unique_classes)
 
     if class_names is None:
-        class_names = config_class_names
+        class_names = config_class_names[: len(unique_classes)]
 
     if len(unique_classes) != len(class_names):
         raise ValueError(
