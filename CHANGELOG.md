@@ -1,5 +1,9 @@
 # deeplabcut2yolo Change Log
 
+## 2.2.1
+**Bug Fix**
+- Default class names are correctly defined
+
 ## 2.2
 **Functionality**
 - convert() no longer takes test_paths as they are not used in YOLO data.yml.
