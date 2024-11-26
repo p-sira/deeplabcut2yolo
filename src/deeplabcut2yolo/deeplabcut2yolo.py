@@ -255,7 +255,7 @@ def convert(
     n_classes = len(unique_classes)
 
     if class_names is None:
-        class_names = list(range(n_classes))
+        class_names = config_class_names
 
     if len(unique_classes) != len(class_names):
         raise ValueError(
