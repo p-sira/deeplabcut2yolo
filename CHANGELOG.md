@@ -1,5 +1,12 @@
 # deeplabcut2yolo Change Log
 
+### 2.2.3
+**Bug Fix**
+- Bounding box calculation ignores the non-visible keypoints
+
+**Others**
+- Reduced package size
+
 ### 2.2.2
 **Bug Fix**
 - Override class names should work with str and list[int]
