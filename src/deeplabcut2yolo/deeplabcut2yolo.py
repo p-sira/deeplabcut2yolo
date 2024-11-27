@@ -129,13 +129,17 @@ def _normalize_coords(
     return coords
 
 
-def _calculate_bbox(coords: npt.NDArray[np.floating]):
-    X = coords[:, :, 0]
-    Y = coords[:, :, 1]
-    min_x = np.min(X, axis=1)
-    max_x = np.max(X, axis=1)
-    min_y = np.min(Y, axis=1)
-    max_y = np.max(Y, axis=1)
+def _calculate_bbox(
+    coords: npt.NDArray[np.floating],
+) -> tuple[npt.NDArray[np.floating], ...]:
+    visibility_mask = coords[:, :, 2] == 1
+    X = np.where(visibility_mask, coords[:, :, 0], np.nan)
+    Y = np.where(visibility_mask, coords[:, :, 1], np.nan)
+
+    min_x = np.nanmin(X, axis=1)
+    max_x = np.nanmax(X, axis=1)
+    min_y = np.nanmin(Y, axis=1)
+    max_y = np.nanmax(Y, axis=1)
 
     bbox_x = (min_x + max_x) / 2
     bbox_y = (min_y + max_y) / 2
