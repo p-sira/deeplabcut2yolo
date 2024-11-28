@@ -34,7 +34,7 @@ To install deeplabcut2yolo using pip:
 pip install deeplabcut2yolo
 ```
 
-For more information, see [examples](https://github.com/p-sira/deeplabcut2yolo/tree/main/examples) and [documentation](https://psira.me/deeplabcut2yolo).
+For more information, see [examples](https://github.com/p-sira/deeplabcut2yolo/tree/main/examples) and [documentation](https://psira.me/deeplabcut2yolo/).
 
 ## Contribution
 You can contribute to deeplabcut2yolo by making pull requests. Currently, these are high-priority features:
