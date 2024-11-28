@@ -1,0 +1,693 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>deeplabcut2yolo.deeplabcut2yolo &#8212; deeplabcut2yolo 2.2.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=85e56e6b"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/deeplabcut2yolo/deeplabcut2yolo';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">deeplabcut2yolo 2.2.3 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../convert.html">
+    convert
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../convert.html">
+    convert
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">deeplabcut2yolo.deeplabcut2yolo</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for deeplabcut2yolo.deeplabcut2yolo</h1><div class="highlight"><pre>
+<span></span><span class="c1"># deeplabcut2yolo is licensed under GNU General Public License v3.0, see LICENSE.</span>
+<span class="c1"># Copyright 2024 Sira Pornsiriprasert &lt;code@psira.me&gt;</span>
+
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+
+<span class="k">def</span> <span class="nf">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">__to_str_path_list</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">paths</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">paths</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">__check_str_dirs_exist</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The directory </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_detect_paths</span><span class="p">(</span>
+    <span class="n">root_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">pickle_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">pickle_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">potential_paths</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">path</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*/iteration*/*/*shuffle*.pickle&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;Documentation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">potential_paths</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;Pickle file not found. Use the parameter pickle_path to specify the path.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">potential_paths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Multiple potential pickle files found: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">potential_paths</span><span class="p">))</span><span class="si">}</span><span class="s2">. Use the parameter pickle_path to specify the path.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">potential_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">pickle_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">config_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">root_dir</span> <span class="o">/</span> <span class="s2">&quot;config.yaml&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;Config file not found. Use the parameter config_path to specify the path.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">config_path</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid config YAML file format</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Use multianimalbodyparts. Some dataset bodyparts contains class specific parts</span>
+        <span class="n">keypoints</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;multianimalbodyparts&quot;</span><span class="p">]</span>
+        <span class="n">n_keypoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keypoints</span><span class="p">)</span>
+        <span class="n">class_names</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;individuals&quot;</span><span class="p">]</span>
+        <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_names</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid config.yaml structure</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">class_names</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">,</span> <span class="n">n_keypoints</span>
+
+
+<span class="k">def</span> <span class="nf">_create_data_yml</span><span class="p">(</span><span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">,</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid pickle file object </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> expecting &lt;class &#39;list&#39;&gt;&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_datapoints</span><span class="p">(</span>
+    <span class="n">joint_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">n_keypoints</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">class_lookup</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the coords from DeepLabCut pickle where they are a dict with the class index as the key.</span>
+<span class="sd">    The values of the dict are the arrays of keypoints (n_visible x 3) in the format joint_idx, x, y.</span>
+<span class="sd">    Joints that aren&#39;t visible are skipped in the array.</span>
+
+<span class="sd">    Return a tuple of an array of coords (n_visible_classes x n_keypoints x 2) and a list of class indices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">joint_dict</span><span class="p">)</span>  <span class="c1"># Number of visible classes</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">n_keypoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">class_idx</span><span class="p">,</span> <span class="n">class_joints</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">joint_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">visible_idx</span> <span class="o">=</span> <span class="n">class_joints</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">visible_coords</span> <span class="o">=</span> <span class="n">class_joints</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">visible_idx</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">visible_coords</span>
+        <span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">visible_idx</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">class_lookup</span><span class="p">[</span><span class="n">class_idx</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">coords</span><span class="p">,</span> <span class="n">classes</span>
+
+
+<span class="k">def</span> <span class="nf">_normalize_coords</span><span class="p">(</span>
+    <span class="n">coords</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="n">size_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">size_y</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]:</span>
+    <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">size_x</span>
+    <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">size_y</span>
+    <span class="k">return</span> <span class="n">coords</span>
+
+
+<span class="k">def</span> <span class="nf">_calculate_bbox</span><span class="p">(</span>
+    <span class="n">coords</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="n">visibility_mask</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">visibility_mask</span><span class="p">,</span> <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">visibility_mask</span><span class="p">,</span> <span class="n">coords</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">min_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">max_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">min_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">max_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">bbox_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_x</span> <span class="o">+</span> <span class="n">max_x</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">bbox_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_y</span> <span class="o">+</span> <span class="n">max_y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">bbox_w</span> <span class="o">=</span> <span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span>
+    <span class="n">bbox_h</span> <span class="o">=</span> <span class="n">max_y</span> <span class="o">-</span> <span class="n">min_y</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">bbox_x</span><span class="p">,</span> <span class="n">bbox_y</span><span class="p">,</span> <span class="n">bbox_w</span><span class="p">,</span> <span class="n">bbox_h</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_flip_idx</span><span class="p">(</span><span class="n">n_keypoints</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">symmetric_pairs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a list of flip indices.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n_keypoints (int): Number of keypoints.</span>
+<span class="sd">        symmetric_pairs (list[tuple[int, int]]): Pairs of keypoint indices to swap</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[int]: List of flip indices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flip_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_keypoints</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">symmetric_pairs</span><span class="p">:</span>
+        <span class="n">flip_idx</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">flip_idx</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="n">flip_idx</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">flip_idx</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">flip_idx</span>
+
+
+<div class="viewcode-block" id="convert">
+<a class="viewcode-back" href="../../convert.html#deeplabcut2yolo.convert">[docs]</a>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span>
+    <span class="n">dataset_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pickle_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">train_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">val_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">data_yml_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">skeleton_symmetric_pairs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">override_classes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert DeepLabCut dataset to YOLO format</span>
+
+<span class="sd">    DeepLabCut labels can be found in the pickled label file, the CollectedData CSV,</span>
+<span class="sd">    the CollectedData HDF (.h5) in the dataset iteration directory and in the image directories.</span>
+<span class="sd">    They consists of the datapoint classes, keypoint IDs and their coordinates. This library</span>
+<span class="sd">    utilizes the pickled label file located in the subdirectory training-dataset/. The number of classes</span>
+<span class="sd">    and number of keypoints per datapoint are obtained from the config.yaml found in the dataset</span>
+<span class="sd">    root directory.</span>
+
+<span class="sd">    The YOLO format requires the class IDs, their bounding box positions (x, y) and dimensions (w, h),</span>
+<span class="sd">    and the keypoints (px, py, visibility). These data need to be normalized.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataset_path (Path | str): Path to the dataset root directory</span>
+<span class="sd">        pickle_path (Path | str | None, optional): Path to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.</span>
+<span class="sd">        config_path (Path | str | None, optional): Path to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.</span>
+<span class="sd">        train_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the training directories. Required when specifying data_yml_path. Defaults to None.</span>
+<span class="sd">        val_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the validation directories. Required when specifying data_yml_path. Defaults to None.</span>
+<span class="sd">        data_yml_path (Path | str | None, optional): Path to create the data.yml file. Leaving the parameter as None will not create the data.yml file. Defaults to None.</span>
+<span class="sd">        skeleton_symmetric_pairs (list[tuple[int, int]] | None, optional): A list of symmetric keypoint indices. For example, with head=0, left_eye=1, right_eye=2, and body=3, the skeleton_symmetric_pairs will be [(1, 2)]. YOLO performs better when symmetric pairs are appropriately defined. Leave as None if there is no symmetric pair. Defaults to None.</span>
+<span class="sd">        override_classes (list[int] | str | None, optional): Overriding class IDs to map from the original dataset class IDs. For example, the original classes are 0, 1, and 2. To override 0 and 1 to class 0 and 2 to class 1, this argument will be [0, 0, 1] in the list format or &quot;001&quot; in the string format. Defaults to None.</span>
+<span class="sd">        class_names (list[str] | list[int] | None, optional): A list of class names. If None, then the class names will be 0, 1, 2, ... or corresponding to the unique indices in the provided override_classes. Defaults to None.</span>
+<span class="sd">        precision (int, optional): The number of decimals of the converted label. Defaults to 6.</span>
+<span class="sd">        verbose (bool, optional): Print the conversion information and status. If set to true, you can optionally install tqdm to enabele progress bar. Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Argument validation and preparation</span>
+    <span class="n">dataset_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_yml_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">train_paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;train_paths must be specified to create data.yml. Otherwise, set create_data_yml to False.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">val_paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;val_paths must be specified to create data.yml. Otherwise, set create_data_yml to False.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># train, val, and test paths use __to_str_path_list to facilitate dumping data to data.yml without having to map(str, ...)</span>
+        <span class="n">train_paths</span> <span class="o">=</span> <span class="n">__to_str_path_list</span><span class="p">(</span><span class="n">train_paths</span><span class="p">)</span>
+        <span class="n">val_paths</span> <span class="o">=</span> <span class="n">__to_str_path_list</span><span class="p">(</span><span class="n">val_paths</span><span class="p">)</span>
+        <span class="n">__check_str_dirs_exist</span><span class="p">(</span><span class="n">train_paths</span><span class="p">)</span>
+        <span class="n">__check_str_dirs_exist</span><span class="p">(</span><span class="n">val_paths</span><span class="p">)</span>
+
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="s2">&quot;DeepLabCut2YOLO</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Dataset path: </span><span class="si">{</span><span class="n">dataset_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">data_path</span><span class="p">,</span> <span class="n">config_path</span> <span class="o">=</span> <span class="n">_detect_paths</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">pickle_path</span><span class="p">,</span> <span class="n">config_path</span><span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Found pickled labels: </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Found config file: </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_n_classes</span><span class="p">,</span> <span class="n">config_class_names</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">,</span> <span class="n">n_keypoints</span> <span class="o">=</span> <span class="n">_extract_config</span><span class="p">(</span>
+        <span class="n">config_path</span>
+    <span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;  nc: </span><span class="si">{</span><span class="n">config_n_classes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span>
+        <span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;  names: </span><span class="si">{</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">config_n_classes</span><span class="p">),</span><span class="w"> </span><span class="n">config_class_names</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;  kpt: </span><span class="si">{</span><span class="n">keypoints</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;  kpt_shape: [</span><span class="si">{</span><span class="n">n_keypoints</span><span class="si">}</span><span class="s2">, 3]&quot;</span><span class="p">)</span>
+
+    <span class="n">class_lookup</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">config_n_classes</span><span class="p">)</span>
+    <span class="c1"># Override class indices</span>
+    <span class="k">if</span> <span class="n">override_classes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">class_lookup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">override_classes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">override_classes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">config_n_classes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The length of override_classes must be equal to dataset&#39;s original number of classes.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">override_classes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">class_lookup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">class_lookup</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;The override_classes string must be a string of integers.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Overrided class indices with: </span><span class="si">{</span><span class="n">class_lookup</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">class_lookup</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">class_lookup</span><span class="p">))</span>
+    <span class="n">unique_classes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">class_lookup</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="p">)</span>  <span class="c1"># Like set but preserves the order</span>
+    <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">class_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">class_names</span> <span class="o">=</span> <span class="n">config_class_names</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_names</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The number of class_names must be equal to the number of dataset classes or unique classes in override_classes.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">dict_idx_class_name</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">,</span> <span class="n">class_names</span><span class="p">))</span>
+
+    <span class="c1"># Create data.yml</span>
+    <span class="k">if</span> <span class="n">data_yml_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="s2">&quot;Generating data.yml...&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()),</span>
+            <span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="n">train_paths</span><span class="p">,</span>
+            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">val_paths</span><span class="p">,</span>
+            <span class="s2">&quot;kpt_shape&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">n_keypoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;flip_idx&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">get_flip_idx</span><span class="p">(</span><span class="n">n_keypoints</span><span class="p">,</span> <span class="n">skeleton_symmetric_pairs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">skeleton_symmetric_pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_keypoints</span><span class="p">))</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;nc&quot;</span><span class="p">:</span> <span class="n">n_classes</span><span class="p">,</span>
+            <span class="s2">&quot;names&quot;</span><span class="p">:</span> <span class="n">dict_idx_class_name</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># Skeleton data from DeepLabCut is unreliable, the joints don&#39;t connect correctly.</span>
+        <span class="c1"># Once fixed, I will implement automatic flip index generation algorithm.</span>
+        <span class="n">_create_data_yml</span><span class="p">(</span><span class="n">data_yml_path</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Created data.yml: </span><span class="si">{</span><span class="n">data_yml_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>  <span class="c1"># Prevent unnecessary loops</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Progress bar if verbose=True and tqdm module is present</span>
+    <span class="n">progress_bar</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>  <span class="c1"># type: ignore</span>
+
+            <span class="n">progress_bar</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="c1"># Converting DLC labels to YOLO format</span>
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="s2">&quot;Converting labels...&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+
+    <span class="n">data_iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">progress_bar</span> <span class="k">else</span> <span class="n">data</span>  <span class="c1"># type: ignore</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">data_iterator</span><span class="p">:</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset_path</span> <span class="o">/</span> <span class="n">image</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+        <span class="n">coords</span><span class="p">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">_extract_datapoints</span><span class="p">(</span>
+            <span class="n">image</span><span class="p">[</span><span class="s2">&quot;joints&quot;</span><span class="p">],</span> <span class="n">n_keypoints</span><span class="p">,</span> <span class="n">class_lookup</span>
+        <span class="p">)</span>
+        <span class="c1"># The image size in deeplabcut is h*w</span>
+        <span class="n">size_y</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">size_x</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">normalized_coords</span> <span class="o">=</span> <span class="n">_normalize_coords</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">size_x</span><span class="p">,</span> <span class="n">size_y</span><span class="p">)</span>
+        <span class="n">bbox_x</span><span class="p">,</span> <span class="n">bbox_y</span><span class="p">,</span> <span class="n">bbox_w</span><span class="p">,</span> <span class="n">bbox_h</span> <span class="o">=</span> <span class="n">_calculate_bbox</span><span class="p">(</span><span class="n">normalized_coords</span><span class="p">)</span>
+
+        <span class="n">yolo_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_class</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">bx</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">by</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">bw</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">bh</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s1">f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">y</span><span class="si">:</span><span class="s1">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s1">f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">vis</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">vis</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">normalized_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">data_class</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">bw</span><span class="p">,</span> <span class="n">bh</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                    <span class="nb">zip</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">bbox_x</span><span class="p">,</span> <span class="n">bbox_y</span><span class="p">,</span> <span class="n">bbox_w</span><span class="p">,</span> <span class="n">bbox_h</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yolo_string</span><span class="p">)</span>
+
+    <span class="n">__v_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Conversion completed!&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright Copyright 2024 Sira Pornsiriprasert.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
