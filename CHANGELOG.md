@@ -1,4 +1,4 @@
-# deeplabcut2yolo Change Log
+## 2.2
 
 ### 2.2.3
 **Bug Fix**
@@ -15,7 +15,7 @@
 **Bug Fix**
 - Default class names are correctly defined
 
-## 2.2
+### 2.2.0
 **Functionality**
 - convert() no longer takes test_paths as they are not used in YOLO data.yml.
 - convert() no longer takes list of dataset paths as there is not much use case.
@@ -50,11 +50,13 @@
 **Functionality**
 - No more dependency on pandas. Added numpy and pyyaml dependency.
 
+## 1.1
+
 ### 1.1.1
 **Functionality**
 - Return DataFrame when using convert()
 
-## 1.1
+### 1.1.0
 **Functionality**
 - Reimplement the convert function for more class and keypoint flexibility
 - Reimplement type hinting for extended compatibility with older Python versions

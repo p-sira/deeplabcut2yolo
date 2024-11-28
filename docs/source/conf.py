@@ -59,6 +59,7 @@ html_static_path = ["_static"]
 html_sidebars = {
   "install": [],
   "deeplabcut2yolo": [],
+  "changelog": [],
 }
 
 deeplabcut2yolo.__doc__ = ""
