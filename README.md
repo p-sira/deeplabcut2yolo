@@ -6,10 +6,10 @@
 [![PyPI Package Version](https://img.shields.io/pypi/v/deeplabcut2yolo?label=pypi%20package&color=a190ff)](https://pypi.org/project/deeplabcut2yolo/)
 [![PyPI Total Downloads](https://static.pepy.tech/badge/deeplabcut2yolo)](https://pypistats.org/packages/deeplabcut2yolo)
 
+**deeplabcut2yolo** facilitates training [DeepLabCut datasets](https://benchmark.deeplabcut.org/datasets.html) on [YOLO](https://docs.ultralytics.com/) models. Deeplabcut2yolo automatically converts DeepLabCut (DLC) labels to COCO-like format compatible with YOLO, while providing customizability for more advanced users, so you can spend your energy on what matters!
+
 ![Results from d2y](d2y-trimouse.jpg "DLC Tri-mouse dataset converted for YOLO training")
 *All DeepLabCut datasets belong to their respective owner under CC BY-NC 4.0. This particular image is the training data for YOLO, converted using deeplabcut2yolo from the Tri-Mouse dataset (Lauer et al., 2022).*
-
-**deeplabcut2yolo** facilitates training [DeepLabCut datasets](https://benchmark.deeplabcut.org/datasets.html) on [YOLO](https://docs.ultralytics.com/) models. Deeplabcut2yolo automatically converts DeepLabCut (DLC) labels to COCO-like format compatible with YOLO, while providing customizability for more advanced users, so you can spend your energy on what matters!
 
 ## Quick Start
 ```python
