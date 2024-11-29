@@ -2,9 +2,10 @@
 **Convert DeepLabCut dataset to YOLO format,**\
 **Lightning-fast and hassle-free.**
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: GPL v3](https://img.shields.io/badge/license-GPLv3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PyPI Package Version](https://img.shields.io/pypi/v/deeplabcut2yolo?label=pypi%20package&color=a190ff)](https://pypi.org/project/deeplabcut2yolo/)
-[![PyPI Total Downloads](https://static.pepy.tech/badge/deeplabcut2yolo)](https://pypistats.org/packages/deeplabcut2yolo)
+[![Package Total Downloads](https://img.shields.io/pepy/dt/deeplabcut2yolo)](https://pepy.tech/projects/deeplabcut2yolo)
+[![Documentation](https://img.shields.io/badge/docs-passing-default)](https://psira.me/deeplabcut2yolo/)
 
 **deeplabcut2yolo** facilitates training [DeepLabCut datasets](https://benchmark.deeplabcut.org/datasets.html) on [YOLO](https://docs.ultralytics.com/) models. Deeplabcut2yolo automatically converts DeepLabCut (DLC) labels to COCO-like format compatible with YOLO, while providing customizability for more advanced users, so you can spend your energy on what matters!
 
