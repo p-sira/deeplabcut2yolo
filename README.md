@@ -1,5 +1,5 @@
 # deeplabcut2yolo
-**Convert DeepLabCut dataset to YOLO format,**\
+**Convert DLC to YOLO,**\
 **Lightning-fast and hassle-free.**
 
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-red.svg)](https://www.gnu.org/licenses/gpl-3.0)
