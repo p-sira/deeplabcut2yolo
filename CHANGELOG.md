@@ -1,4 +1,10 @@
+# Changelog
+
 ## 2.2
+### 2.2.4
+**Others**
+- Migrated documentation to GitHub Pages
+- Use pip-tools for compiling dev dependencies
 
 ### 2.2.3
 **Bug Fix**
