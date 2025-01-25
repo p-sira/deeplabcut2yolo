@@ -1,0 +1,6 @@
+pip-tools
+numpy
+pyyaml
+sphinx
+pydata_sphinx_theme
+myst_parser
