@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>D2Y Documentation &#8212; deeplabcut2yolo 2.2.3 documentation</title>
+    <title>D2Y Documentation &#8212; deeplabcut2yolo 2.2.4 documentation</title>
   
   
   
@@ -16,8 +16,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -27,18 +27,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=85e56e6b"></script>
+    <script src="_static/documentation_options.js?v=4e6cfea6"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">deeplabcut2yolo 2.2.3 documentation</p>
+    <p class="title logo__title">deeplabcut2yolo 2.2.4 documentation</p>
   
 </a></div>
     
@@ -262,9 +262,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -287,17 +292,18 @@
 <h1>D2Y Documentation<a class="headerlink" href="#d2y-documentation" title="Link to this heading">#</a></h1>
 <section id="deeplabcut2yolo">
 <h2>deeplabcut2yolo<a class="headerlink" href="#deeplabcut2yolo" title="Link to this heading">#</a></h2>
-<p><strong>Convert DeepLabCut dataset to YOLO format,</strong><br />
+<p><strong>Convert DLC to YOLO,</strong><br />
 <strong>Lightning-fast and hassle-free.</strong></p>
-<p><a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-red.svg" /></a>
+<p><a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-red.svg" /></a>
 <a class="reference external" href="https://pypi.org/project/deeplabcut2yolo/"><img alt="PyPI Package Version" src="https://img.shields.io/pypi/v/deeplabcut2yolo?label=pypi%20package&amp;color=a190ff" /></a>
-<a class="reference external" href="https://pypistats.org/packages/deeplabcut2yolo"><img alt="PyPI Total Downloads" src="https://static.pepy.tech/badge/deeplabcut2yolo" /></a></p>
+<a class="reference external" href="https://pepy.tech/projects/deeplabcut2yolo"><img alt="Package Total Downloads" src="https://img.shields.io/pepy/dt/deeplabcut2yolo" /></a>
+<a class="reference external" href="https://p-sira.github.io/deeplabcut2yolo/"><img alt="Documentation" src="https://img.shields.io/badge/docs-passing-default" /></a></p>
 <p><strong>deeplabcut2yolo</strong> facilitates training <a class="reference external" href="https://benchmark.deeplabcut.org/datasets.html">DeepLabCut datasets</a> on <a class="reference external" href="https://docs.ultralytics.com/">YOLO</a> models. Deeplabcut2yolo automatically converts DeepLabCut (DLC) labels to COCO-like format compatible with YOLO, while providing customizability for more advanced users, so you can spend your energy on what matters!</p>
 <p><img alt="Results from d2y" src="_images/d2y-trimouse.jpg" />
 <em>All DeepLabCut datasets belong to their respective owner under CC BY-NC 4.0. This particular image is the training data for YOLO, converted using deeplabcut2yolo from the Tri-Mouse dataset (Lauer et al., 2022).</em></p>
 <section id="quick-start">
 <h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">deeplabcut2yolo</span> <span class="k">as</span> <span class="nn">d2y</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">deeplabcut2yolo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">d2y</span>
 
 <span class="n">d2y</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;./deeplabcut-dataset/&quot;</span><span class="p">)</span>
 
@@ -317,7 +323,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">deeplabcut2yolo</span>
 </pre></div>
 </div>
-<p>For more information, see <a class="reference external" href="https://github.com/p-sira/deeplabcut2yolo/tree/main/examples">examples</a> and <a class="reference external" href="https://psira.me/deeplabcut2yolo/">documentation</a>.</p>
+<p>For more information, see <a class="reference external" href="https://github.com/p-sira/deeplabcut2yolo/tree/main/examples">examples</a> and <a class="reference external" href="https://p-sira.github.io/deeplabcut2yolo/">documentation</a>.</p>
 </section>
 <section id="contribution">
 <h3>Contribution<a class="headerlink" href="#contribution" title="Link to this heading">#</a></h3>
@@ -332,17 +338,17 @@
 <p>Citation is not required but is greatly appreciated. If this project helps you,
 please cite using the following APA-style reference</p>
 <blockquote>
-<div><p>Pornsiriprasert, S. (2024). <em>Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format</em> (Version 2.2.3) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/</p>
+<div><p>Pornsiriprasert, S. (2025). <em>Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format</em> (Version 2.2.4) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/</p>
 </div></blockquote>
 <p>or this BibTeX entry.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">deeplabcut2yolo</span><span class="p">,</span>
     <span class="n">author</span> <span class="o">=</span> <span class="p">{{</span><span class="n">Pornsiriprasert</span><span class="p">,</span> <span class="n">S</span><span class="p">}},</span>
     <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">Deeplabcut2yolo</span><span class="p">:</span> <span class="n">A</span> <span class="n">Python</span> <span class="n">Library</span> <span class="k">for</span> <span class="n">Converting</span> <span class="n">DeepLabCut</span> <span class="n">Dataset</span> <span class="n">to</span> <span class="n">YOLO</span> <span class="n">Format</span><span class="p">},</span>
     <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">p</span><span class="o">-</span><span class="n">sira</span><span class="o">/</span><span class="n">deeplabcut2yolo</span><span class="o">/</span><span class="p">},</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">2.2.3</span><span class="p">},</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">2.2.4</span><span class="p">},</span>
     <span class="n">publisher</span> <span class="o">=</span> <span class="p">{</span><span class="n">GitHub</span><span class="p">},</span>
-    <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2024</span><span class="p">},</span>
-    <span class="n">month</span> <span class="o">=</span> <span class="p">{</span><span class="mi">11</span><span class="p">},</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2025</span><span class="p">},</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -409,13 +415,13 @@ please cite using the following APA-style reference</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/index.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -430,8 +436,8 @@ please cite using the following APA-style reference</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -464,7 +470,8 @@ please cite using the following APA-style reference</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
