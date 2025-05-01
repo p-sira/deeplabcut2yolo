@@ -46,7 +46,7 @@ You can contribute to deeplabcut2yolo by making pull requests. Currently, these 
 Citation is not required but is greatly appreciated. If this project helps you, 
 please cite using the following APA-style reference
 
-> Pornsiriprasert, S. (2025). *Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format* (Version 2.2.4) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/
+> Pornsiriprasert, S. (2025). *Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format* (Version 2.2.5) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/
 
 or this BibTeX entry.
 
@@ -55,9 +55,9 @@ or this BibTeX entry.
     author = {{Pornsiriprasert, S}},
     title = {Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format},
     url = {https://github.com/p-sira/deeplabcut2yolo/},
-    version = {2.2.4},
+    version = {2.2.5},
     publisher = {GitHub},
     year = {2025},
-    month = {1},
+    month = {5},
 }
 ```
