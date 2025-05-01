@@ -16,6 +16,7 @@
 ```python
 import deeplabcut2yolo as d2y
 
+# In its simplest form,
 d2y.convert("./deeplabcut-dataset/")
 
 # To also generate data.yml
@@ -36,6 +37,12 @@ pip install deeplabcut2yolo
 ```
 
 For more information, see [examples](https://github.com/p-sira/deeplabcut2yolo/tree/main/examples) and [documentation](https://p-sira.github.io/deeplabcut2yolo/).
+
+## Features
+- Automatically detect default DeepLabCut dataset structure
+- Vectorized label conversion
+- Support single- and multi-animal projects
+- Convenient data.yml generation function for YOLO models
 
 ## Contribution
 You can contribute to deeplabcut2yolo by making pull requests. Currently, these are high-priority features:
