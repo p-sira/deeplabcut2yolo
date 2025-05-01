@@ -16,7 +16,7 @@ classifiers = [
   "Operating System :: OS Independent",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["numpy", "pyyaml"]
+dependencies = ["numpy", "pyyaml", "ruamel-yaml"]
 
 [project.urls]
 Homepage = "https://github.com/p-sira/deeplabcut2yolo"

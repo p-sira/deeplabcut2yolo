@@ -1,6 +1,7 @@
 pip-tools
 numpy
 pyyaml
+ruamel-yaml
 sphinx
 pydata_sphinx_theme
 myst_parser
