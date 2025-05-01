@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2.2
+### 2.2.5
+**Functionality**
+- Support converting single-animal projects
+- Support detecting and converting multiple pickled label files
+
 ### 2.2.4
 **Others**
 - Migrated documentation to GitHub Pages

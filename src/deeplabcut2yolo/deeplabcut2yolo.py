@@ -2,9 +2,10 @@
 # Copyright 2024 Sira Pornsiriprasert <code@psira.me>
 
 import pickle
-from typing import cast
 import warnings
+from collections.abc import Iterable
 from pathlib import Path
+from typing import cast
 
 import numpy as np
 import numpy.typing as npt
@@ -29,27 +30,14 @@ def __check_str_dirs_exist(paths: list[str]):
 
 def _detect_paths(
     root_dir: Path,
-    pickle_path: str | Path | None,
+    pickle_path: str | Path | list[str] | list[Path] | None,
     config_path: str | Path | None,
-) -> tuple[Path, Path]:
-    if pickle_path is None:
-        potential_paths = [
-            path
-            for path in root_dir.glob("*/iteration*/*/*shuffle*.pickle")
-            if "Documentation" not in str(path)
-        ]
-        if len(potential_paths) < 1:
-            raise FileNotFoundError(
-                "Pickle file not found. Use the parameter pickle_path to specify the path."
-            )
-        if len(potential_paths) > 1:
-            raise ValueError(
-                f"Multiple potential pickle files found: {list(map(str, potential_paths))}. Use the parameter pickle_path to specify the path."
-            )
-        data_path = potential_paths[0]
-    else:
-        data_path = Path(pickle_path)
+) -> tuple[list[Path], Path]:
+    """Detect paths need to convert d2y.
 
+    Returns pickle_path, config_path
+    Returns the first found pickle path if there are multiple.
+    """
     if config_path is None:
         config_path = root_dir / "config.yaml"
         if not config_path.is_file():
@@ -59,26 +47,61 @@ def _detect_paths(
     else:
         config_path = Path(config_path)
 
+    if pickle_path is not None:
+        data_path = (
+            [Path(path) for path in pickle_path]
+            if isinstance(pickle_path, list)
+            else [Path(pickle_path)]
+        )
+        return data_path, config_path
+
+    potential_paths = [
+        path for path in root_dir.glob("*/iteration*/*/*shuffle*.pickle")
+    ]
+
+    non_doc_paths = [
+        path for path in potential_paths if "Documentation" not in str(path)
+    ]
+
+    if len(potential_paths) < 1:
+        raise FileNotFoundError(
+            "Pickle file not found. Use the parameter pickle_path to specify the path."
+        )
+
+    data_path = potential_paths
+    if len(non_doc_paths) > 0:
+        data_path = non_doc_paths
+
+    # If no pickle file found, fall back to file with Document in their names.
+    # Document files need extra handling to extract the inner list of dicts.
     return data_path, config_path
 
 
-def _extract_config(config_path: Path) -> tuple[int, list[str], list[str], int]:
+def _extract_config(config_path: Path) -> tuple[int, list[str], list[str], int, bool]:
     with open(config_path) as f:
         try:
             config = yaml.safe_load(f)
         except yaml.YAMLError as e:
-            raise yaml.YAMLError(f"Invalid config YAML file format\n{e}")
+            raise yaml.YAMLError(f"Invalid config YAML file format: {e}")
 
     try:
-        # Use multianimalbodyparts. Some dataset bodyparts contains class specific parts
-        keypoints = config["multianimalbodyparts"]
+        is_multianimal = config["multianimalproject"]
+
+        if is_multianimal:
+            # Use multianimalbodyparts. Some dataset bodyparts contains class specific parts
+            keypoints = config["multianimalbodyparts"]
+            class_names = config["individuals"]
+        else:
+            # Single-animal dataset doesn't have multianimalparts and individuals field
+            keypoints = config["bodyparts"]
+            class_names = [config["Task"]]
+
         n_keypoints = len(keypoints)
-        class_names = config["individuals"]
         n_classes = len(class_names)
     except KeyError as e:
-        raise KeyError(f"Invalid config.yaml structure\n{e}")
+        raise KeyError(f"Invalid config.yaml structure: {e}")
 
-    return n_classes, class_names, keypoints, n_keypoints
+    return n_classes, class_names, keypoints, n_keypoints, is_multianimal
 
 
 def _create_data_yml(output_path: str | Path, **kwargs) -> None:
@@ -89,7 +112,10 @@ def _create_data_yml(output_path: str | Path, **kwargs) -> None:
 def _load_data(data_path: Path) -> list:
     with open(data_path, "rb") as f, warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
+
         data = pickle.load(f)
+        if "Documentation" in data_path.name:
+            data = data[0]
 
     if isinstance(data, list):
         return data
@@ -100,19 +126,27 @@ def _load_data(data_path: Path) -> list:
 
 
 def _extract_datapoints(
-    joint_dict: dict, n_keypoints: int, class_lookup: tuple[int, ...]
+    joint_data: dict,
+    n_keypoints: int,
+    class_lookup: tuple[int, ...],
+    is_multianimal: bool,
 ) -> tuple[npt.NDArray[np.floating], list]:
     """
-    Extract the coords from DeepLabCut pickle where they are a dict with the class index as the key.
-    The values of the dict are the arrays of keypoints (n_visible x 3) in the format joint_idx, x, y.
+    Extract the coords from DeepLabCut pickle. The format is different in single- and multi-animal project.
+    - In single-animal: It is a list of arrays of keypoints (n_visible x 3) in the format joint_idx, x, y.
+
+    - In multi-animal: It is a dict with the class index as the key. The values of the dict are the arrays as in single animal.
+
     Joints that aren't visible are skipped in the array.
 
     Return a tuple of an array of coords (n_visible_classes x n_keypoints x 2) and a list of class indices.
     """
-    n_classes = len(joint_dict)  # Number of visible classes
+    if not is_multianimal:
+        joint_data = {0: joint_data}
+    n_classes = len(joint_data)  # Number of visible classes
     classes = []
     coords = np.zeros((n_classes, n_keypoints, 3))
-    for i, (class_idx, class_joints) in enumerate(joint_dict.items()):
+    for i, (class_idx, class_joints) in enumerate(joint_data.items()):
         visible_idx = class_joints[:, 0].astype(int)
         visible_coords = class_joints[:, 1:3]
         coords[i, visible_idx, :2] = visible_coords
@@ -164,9 +198,41 @@ def get_flip_idx(n_keypoints: int, symmetric_pairs: list[tuple[int, int]]) -> li
     return flip_idx
 
 
+def __convert_labels(
+    data_iterator: Iterable,
+    dataset_path: Path,
+    n_keypoints: int,
+    class_lookup: tuple,
+    is_multianimal: bool,
+    precision: int,
+) -> None:
+    for image in data_iterator:
+        file_path = (dataset_path / image["image"]).with_suffix(".txt")
+        coords, classes = _extract_datapoints(
+            image["joints"], n_keypoints, class_lookup, is_multianimal
+        )
+        # The image size in deeplabcut is h*w
+        size_y = image["size"][1]
+        size_x = image["size"][2]
+        normalized_coords = _normalize_coords(coords, size_x, size_y)
+        bbox_x, bbox_y, bbox_w, bbox_h = _calculate_bbox(normalized_coords)
+
+        yolo_string = "\n".join(
+            [
+                f"{data_class} {bx:.{precision}f} {by:.{precision}f} {bw:.{precision}f} {bh:.{precision}f} {' '.join([f'{x:.{precision}f} {y:.{precision}f} {int(vis)}' for x, y, vis in normalized_coords[i]])}"
+                for i, (data_class, bx, by, bw, bh) in enumerate(
+                    zip(classes, bbox_x, bbox_y, bbox_w, bbox_h)
+                )
+            ]
+        )
+
+        with open(file_path, "w") as f:
+            f.write(yolo_string)
+
+
 def convert(
     dataset_path: Path | str,
-    pickle_path: Path | str | None = None,
+    pickle_paths: Path | str | list[Path] | list[str] | None = None,
     config_path: Path | str | None = None,
     train_paths: list[Path] | list[str] | Path | str | None = None,
     val_paths: list[Path] | list[str] | Path | str | None = None,
@@ -179,7 +245,7 @@ def convert(
 ) -> None:
     """Convert DeepLabCut dataset to YOLO format
 
-    DeepLabCut labels can be found in the pickled label file, the CollectedData CSV,
+    DeepLabCut labels can be found in the pickled label file(s), the CollectedData CSV,
     the CollectedData HDF (.h5) in the dataset iteration directory and in the image directories.
     They consists of the datapoint classes, keypoint IDs and their coordinates. This library
     utilizes the pickled label file located in the subdirectory training-dataset/. The number of classes
@@ -189,9 +255,11 @@ def convert(
     The YOLO format requires the class IDs, their bounding box positions (x, y) and dimensions (w, h),
     and the keypoints (px, py, visibility). These data need to be normalized.
 
+    If multiple pickled label files are found, d2y will attempt to convert all the files.
+
     Args:
         dataset_path (Path | str): Path to the dataset root directory
-        pickle_path (Path | str | None, optional): Path to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
+        pickle_paths (Path | str | list[Path] | list[str] | None, optional): Path to the dataset pickled labels. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
         config_path (Path | str | None, optional): Path to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.
         train_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the training directories. Required when specifying data_yml_path. Defaults to None.
         val_paths (list[Path] | list[str] | Path | str | None, optional): Path(s) to the validation directories. Required when specifying data_yml_path. Defaults to None.
@@ -224,12 +292,13 @@ def convert(
 
     __v_print(verbose, "DeepLabCut2YOLO\n")
     __v_print(verbose, f"Dataset path: {dataset_path}")
-    data_path, config_path = _detect_paths(dataset_path, pickle_path, config_path)
-    __v_print(verbose, f"Found pickled labels: {data_path}")
+    data_paths, config_path = _detect_paths(dataset_path, pickle_paths, config_path)
+    __v_print(verbose, f"Found pickled labels: {data_paths}")
     __v_print(verbose, f"Found config file: {config_path}")
-    config_n_classes, config_class_names, keypoints, n_keypoints = _extract_config(
-        config_path
+    config_n_classes, config_class_names, keypoints, n_keypoints, is_multianimal = (
+        _extract_config(config_path)
     )
+    __v_print(verbose, f"  is_multianimal: {is_multianimal}")
     __v_print(verbose, f"  nc: {config_n_classes}")
     __v_print(
         verbose, f"  names: {dict(zip(range(config_n_classes), config_class_names))}"
@@ -308,31 +377,17 @@ def convert(
             pass
 
     # Converting DLC labels to YOLO format
-    __v_print(verbose, "Converting labels...")
-    data = _load_data(data_path)
-
-    data_iterator = tqdm(data) if progress_bar else data  # type: ignore
-    for image in data_iterator:
-        file_path = (dataset_path / image["image"]).with_suffix(".txt")
-        coords, classes = _extract_datapoints(
-            image["joints"], n_keypoints, class_lookup
+    for i, data_path in enumerate(data_paths):
+        __v_print(verbose, f"Converting labels ({i}/{len(data_paths)}): {data_path}")
+        data = _load_data(data_path)
+        data_iterator = tqdm(data) if progress_bar else data  # type: ignore
+        __convert_labels(
+            data_iterator=data_iterator,
+            dataset_path=dataset_path,
+            n_keypoints=n_keypoints,
+            class_lookup=class_lookup,
+            is_multianimal=is_multianimal,
+            precision=precision,
         )
-        # The image size in deeplabcut is h*w
-        size_y = image["size"][1]
-        size_x = image["size"][2]
-        normalized_coords = _normalize_coords(coords, size_x, size_y)
-        bbox_x, bbox_y, bbox_w, bbox_h = _calculate_bbox(normalized_coords)
-
-        yolo_string = "\n".join(
-            [
-                f"{data_class} {bx:.{precision}f} {by:.{precision}f} {bw:.{precision}f} {bh:.{precision}f} {' '.join([f'{x:.{precision}f} {y:.{precision}f} {int(vis)}' for x, y, vis in normalized_coords[i]])}"
-                for i, (data_class, bx, by, bw, bh) in enumerate(
-                    zip(classes, bbox_x, bbox_y, bbox_w, bbox_h)
-                )
-            ]
-        )
-
-        with open(file_path, "w") as f:
-            f.write(yolo_string)
 
     __v_print(verbose, "\nConversion completed!")
