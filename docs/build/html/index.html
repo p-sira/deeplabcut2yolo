@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>D2Y Documentation &#8212; deeplabcut2yolo 2.2.4 documentation</title>
+    <title>D2Y Documentation &#8212; deeplabcut2yolo 2.2.5 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4e6cfea6"></script>
+    <script src="_static/documentation_options.js?v=ea147abf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">deeplabcut2yolo 2.2.4 documentation</p>
+    <p class="title logo__title">deeplabcut2yolo 2.2.5 documentation</p>
   
 </a></div>
     
@@ -305,6 +305,7 @@
 <h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">deeplabcut2yolo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">d2y</span>
 
+<span class="c1"># In its simplest form,</span>
 <span class="n">d2y</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;./deeplabcut-dataset/&quot;</span><span class="p">)</span>
 
 <span class="c1"># To also generate data.yml</span>
@@ -325,6 +326,15 @@
 </div>
 <p>For more information, see <a class="reference external" href="https://github.com/p-sira/deeplabcut2yolo/tree/main/examples">examples</a> and <a class="reference external" href="https://p-sira.github.io/deeplabcut2yolo/">documentation</a>.</p>
 </section>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Automatically detect default DeepLabCut dataset structure</p></li>
+<li><p>Vectorized label conversion</p></li>
+<li><p>Support single- and multi-animal projects</p></li>
+<li><p>Convenient data.yml generation function for YOLO models</p></li>
+</ul>
+</section>
 <section id="contribution">
 <h3>Contribution<a class="headerlink" href="#contribution" title="Link to this heading">#</a></h3>
 <p>You can contribute to deeplabcut2yolo by making pull requests. Currently, these are high-priority features:</p>
@@ -338,17 +348,17 @@
 <p>Citation is not required but is greatly appreciated. If this project helps you,
 please cite using the following APA-style reference</p>
 <blockquote>
-<div><p>Pornsiriprasert, S. (2025). <em>Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format</em> (Version 2.2.4) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/</p>
+<div><p>Pornsiriprasert, S. (2025). <em>Deeplabcut2yolo: A Python Library for Converting DeepLabCut Dataset to YOLO Format</em> (Version 2.2.5) [Computer software]. GitHub. https://github.com/p-sira/deeplabcut2yolo/</p>
 </div></blockquote>
 <p>or this BibTeX entry.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">deeplabcut2yolo</span><span class="p">,</span>
     <span class="n">author</span> <span class="o">=</span> <span class="p">{{</span><span class="n">Pornsiriprasert</span><span class="p">,</span> <span class="n">S</span><span class="p">}},</span>
     <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">Deeplabcut2yolo</span><span class="p">:</span> <span class="n">A</span> <span class="n">Python</span> <span class="n">Library</span> <span class="k">for</span> <span class="n">Converting</span> <span class="n">DeepLabCut</span> <span class="n">Dataset</span> <span class="n">to</span> <span class="n">YOLO</span> <span class="n">Format</span><span class="p">},</span>
     <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">p</span><span class="o">-</span><span class="n">sira</span><span class="o">/</span><span class="n">deeplabcut2yolo</span><span class="o">/</span><span class="p">},</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">2.2.4</span><span class="p">},</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">2.2.5</span><span class="p">},</span>
     <span class="n">publisher</span> <span class="o">=</span> <span class="p">{</span><span class="n">GitHub</span><span class="p">},</span>
     <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2025</span><span class="p">},</span>
-    <span class="n">month</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">},</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -406,6 +416,7 @@ please cite using the following APA-style reference</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deeplabcut2yolo">deeplabcut2yolo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution">Contribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
 </ul>

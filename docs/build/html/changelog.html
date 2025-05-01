@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Changelog &#8212; deeplabcut2yolo 2.2.4 documentation</title>
+    <title>Changelog &#8212; deeplabcut2yolo 2.2.5 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4e6cfea6"></script>
+    <script src="_static/documentation_options.js?v=ea147abf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'changelog';</script>
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">deeplabcut2yolo 2.2.4 documentation</p>
+    <p class="title logo__title">deeplabcut2yolo 2.2.5 documentation</p>
   
 </a></div>
     
@@ -317,15 +317,23 @@
 <section id="id1">
 <h3>2.2<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <section id="id2">
-<h4>2.2.4<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<h4>2.2.5<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<p><strong>Functionality</strong></p>
+<ul class="simple">
+<li><p>Support converting single-animal projects</p></li>
+<li><p>Support detecting and converting multiple pickled label files</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>2.2.4<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
 <p><strong>Others</strong></p>
 <ul class="simple">
 <li><p>Migrated documentation to GitHub Pages</p></li>
 <li><p>Use pip-tools for compiling dev dependencies</p></li>
 </ul>
 </section>
-<section id="id3">
-<h4>2.2.3<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<section id="id4">
+<h4>2.2.3<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
 <p><strong>Bug Fix</strong></p>
 <ul class="simple">
 <li><p>Bounding box calculation ignores the non-visible keypoints</p></li>
@@ -335,22 +343,22 @@
 <li><p>Reduced package size</p></li>
 </ul>
 </section>
-<section id="id4">
-<h4>2.2.2<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<section id="id5">
+<h4>2.2.2<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
 <p><strong>Bug Fix</strong></p>
 <ul class="simple">
 <li><p>Override class names should work with str and list[int]</p></li>
 </ul>
 </section>
-<section id="id5">
-<h4>2.2.1<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<section id="id6">
+<h4>2.2.1<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
 <p><strong>Bug Fix</strong></p>
 <ul class="simple">
 <li><p>Default class names are correctly defined</p></li>
 </ul>
 </section>
-<section id="id6">
-<h4>2.2.0<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<section id="id7">
+<h4>2.2.0<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
 <p><strong>Functionality</strong></p>
 <ul class="simple">
 <li><p>convert() no longer takes test_paths as they are not used in YOLO data.yml.</p></li>
@@ -370,8 +378,8 @@
 </ul>
 </section>
 </section>
-<section id="id7">
-<h3>2.1<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h3>2.1<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <p><strong>New Features</strong></p>
 <ul class="simple">
 <li><p>convert() can convert single or multiple datasets</p></li>
@@ -383,8 +391,8 @@
 <li><p>Fix deeplabcut2yolo module docstring</p></li>
 </ul>
 </section>
-<section id="id8">
-<h3>2.0<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h3>2.0<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p><strong>Performance</strong></p>
 <ul class="simple">
 <li><p>Vectorization of convert()</p></li>
@@ -399,17 +407,17 @@
 <li><p>No more dependency on pandas. Added numpy and pyyaml dependency.</p></li>
 </ul>
 </section>
-<section id="id9">
-<h3>1.1<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <section id="id10">
-<h4>1.1.1<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<h3>1.1<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<section id="id11">
+<h4>1.1.1<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
 <p><strong>Functionality</strong></p>
 <ul class="simple">
 <li><p>Return DataFrame when using convert()</p></li>
 </ul>
 </section>
-<section id="id11">
-<h4>1.1.0<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<section id="id12">
+<h4>1.1.0<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
 <p><strong>Functionality</strong></p>
 <ul class="simple">
 <li><p>Reimplement the convert function for more class and keypoint flexibility</p></li>
@@ -417,8 +425,8 @@
 </ul>
 </section>
 </section>
-<section id="id12">
-<h3>1.0<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<section id="id13">
+<h3>1.0<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
 <p><strong>New Features</strong></p>
 <ul class="simple">
 <li><p>convert function</p></li>
@@ -467,21 +475,22 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changelog">Changelog</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2.4</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.3</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2.2</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.1</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2.0</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2.5</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.4</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.2.3</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.2.2</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.2.1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.2.0</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.1</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.0</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.1.1</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.1.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.1.1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.1.0</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.0</a></li>
 </ul>
 </li>
 </ul>

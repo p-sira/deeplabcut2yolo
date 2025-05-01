@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>D2Y Functions &#8212; deeplabcut2yolo 2.2.4 documentation</title>
+    <title>D2Y Functions &#8212; deeplabcut2yolo 2.2.5 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=4e6cfea6"></script>
+    <script src="_static/documentation_options.js?v=ea147abf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'deeplabcut2yolo';</script>
@@ -110,7 +110,7 @@
   
   
   
-    <p class="title logo__title">deeplabcut2yolo 2.2.4 documentation</p>
+    <p class="title logo__title">deeplabcut2yolo 2.2.5 documentation</p>
   
 </a></div>
     
@@ -317,9 +317,9 @@
 <h2>convert()<a class="headerlink" href="#convert" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="deeplabcut2yolo.convert">
-<span class="sig-prename descclassname"><span class="pre">deeplabcut2yolo.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pickle_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_yml_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skeleton_symmetric_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deeplabcut2yolo/deeplabcut2yolo.html#convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deeplabcut2yolo.convert" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">deeplabcut2yolo.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pickle_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_yml_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skeleton_symmetric_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deeplabcut2yolo/deeplabcut2yolo.html#convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deeplabcut2yolo.convert" title="Link to this definition">#</a></dt>
 <dd><p>Convert DeepLabCut dataset to YOLO format</p>
-<p>DeepLabCut labels can be found in the pickled label file, the CollectedData CSV,
+<p>DeepLabCut labels can be found in the pickled label file(s), the CollectedData CSV,
 the CollectedData HDF (.h5) in the dataset iteration directory and in the image directories.
 They consists of the datapoint classes, keypoint IDs and their coordinates. This library
 utilizes the pickled label file located in the subdirectory training-dataset/. The number of classes
@@ -327,11 +327,12 @@ and number of keypoints per datapoint are obtained from the config.yaml found in
 root directory.</p>
 <p>The YOLO format requires the class IDs, their bounding box positions (x, y) and dimensions (w, h),
 and the keypoints (px, py, visibility). These data need to be normalized.</p>
+<p>If multiple pickled label files are found, d2y will attempt to convert all the files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataset_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span></code>) – Path to the dataset root directory</p></li>
-<li><p><strong>pickle_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">optional</span></code>) – Path to the dataset pickled label. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.</p></li>
+<li><p><strong>pickle_paths</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">list[Path]</span> <span class="pre">|</span> <span class="pre">list[str]</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">optional</span></code>) – Path to the dataset pickled labels. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.</p></li>
 <li><p><strong>config_path</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">optional</span></code>) – Path to the dataset config.yaml. Specify this argument if the dataset directory structure does not match typical DeepLabCut structure. Defaults to None.</p></li>
 <li><p><strong>train_paths</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list[Path]</span> <span class="pre">|</span> <span class="pre">list[str]</span> <span class="pre">|</span> <span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">optional</span></code>) – Path(s) to the training directories. Required when specifying data_yml_path. Defaults to None.</p></li>
 <li><p><strong>val_paths</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list[Path]</span> <span class="pre">|</span> <span class="pre">list[str]</span> <span class="pre">|</span> <span class="pre">Path</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">optional</span></code>) – Path(s) to the validation directories. Required when specifying data_yml_path. Defaults to None.</p></li>
