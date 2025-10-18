@@ -1,9 +1,10 @@
 [project]
 name = "deeplabcut2yolo"
+description = "Convert DeepLabCut dataset to YOLO format"
 authors = [{ name = "Sira Pornsiriprasert", email = "code@psira.me" }]
 maintainers = [{ name = "Sira Pornsiriprasert", email = "code@psira.me" }]
+
 dynamic = ["version"]
-description = "Convert DeepLabCut dataset to YOLO format"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-only"
@@ -15,6 +16,8 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Operating System :: OS Independent",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "License :: OSI Approved :: BSD License",
 ]
 dependencies = ["numpy", "pyyaml", "ruamel-yaml"]
 
