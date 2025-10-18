@@ -53,7 +53,7 @@ You can contribute to deeplabcut2yolo by making pull requests. Currently, these 
 
 ## Citation
 Citation is not required but is greatly appreciated. If this project helps you, 
-please cite using the following APA-style reference
+please cite using the following APA-style reference:
 
 > Pornsiriprasert, S. (2025). Deeplabcut2yolo: A DeepLabCut-to-YOLO Dataset Converter for Python (v2.2.6). Zenodo. https://doi.org/10.5281/zenodo.17386188
 
