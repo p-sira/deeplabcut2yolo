@@ -7,7 +7,6 @@ maintainers = [{ name = "Sira Pornsiriprasert", email = "code@psira.me" }]
 dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.10"
-license = "GPL-3.0-only"
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
