@@ -1,0 +1,3 @@
+All DeepLabCut datasets belong to their respective owner under CC BY-NC 4.0.
+
+The 'd2y-trimouse.jpg' is from DeepLabCut's Tri-Mouse dataset by Lauer et al. (2022), converted to YOLO using deeplabcut2yolo.
