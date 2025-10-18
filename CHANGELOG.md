@@ -8,6 +8,10 @@
 - Update citation with DOI
 - Format README
 
+**Dependencies**
+- Bump urllib3 from 2.3.0 to 2.5.0 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/6
+- Bump requests from 2.32.3 to 2.32.4 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/5
+
 ### 2.2.5
 **Functionality**
 - Support converting single-animal projects
