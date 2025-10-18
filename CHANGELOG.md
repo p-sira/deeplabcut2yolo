@@ -1,6 +1,13 @@
 # Changelog
-
 ## 2.2
+### 2.2.6
+**License**
+- Dual-license under GPL-3.0 and BSD-3-Clause
+
+**Improvements**
+- Update citation with DOI
+- Format README
+
 ### 2.2.5
 **Functionality**
 - Support converting single-animal projects
@@ -62,7 +69,6 @@
 - No more dependency on pandas. Added numpy and pyyaml dependency.
 
 ## 1.1
-
 ### 1.1.1
 **Functionality**
 - Return DataFrame when using convert()
