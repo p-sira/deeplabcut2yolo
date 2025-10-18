@@ -34,7 +34,7 @@ d2y.convert(
 ```
 
 To install deeplabcut2yolo using pip:
-```
+```shell
 pip install deeplabcut2yolo
 ```
 
@@ -59,7 +59,7 @@ please cite using the following APA-style reference:
 
 or this BibTeX entry.
 
-```bibtex
+```text
 @software{pornsiriprasert2025,
   author       = {Pornsiriprasert, Sira},
   title        = {Deeplabcut2yolo: A DeepLabCut-to-YOLO Dataset Converter for Python},
