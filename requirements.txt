@@ -70,7 +70,7 @@ pyyaml==6.0.2
     # via
     #   -r requirements.in
     #   myst-parser
-requests==2.32.3
+requests==2.32.4
     # via sphinx
 ruamel-yaml==0.18.10
     # via -r requirements.in
