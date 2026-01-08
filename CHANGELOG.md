@@ -1,5 +1,9 @@
 # Changelog
 ## 2.2
+### 2.2.8
+**Dependencies**
+- Bump urllib3 from 2.6.0 to 2.6.3 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/9
+
 ### 2.2.7
 **Dependencies**
 - Bump urllib3 from 2.5.0 to 2.6.0 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/7
