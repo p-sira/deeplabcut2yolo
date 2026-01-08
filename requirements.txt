@@ -104,7 +104,7 @@ tomli==2.2.1
     #   sphinx
 typing-extensions==4.12.2
     # via pydata-sphinx-theme
-urllib3==2.6.0
+urllib3==2.6.3
     # via requests
 wheel==0.45.1
     # via pip-tools
