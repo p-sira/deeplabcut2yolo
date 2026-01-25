@@ -53,6 +53,7 @@ packaging==24.2
     # via
     #   build
     #   sphinx
+    #   wheel
 pip-tools==7.4.1
     # via -r requirements.in
 pydata-sphinx-theme==0.16.1
@@ -106,7 +107,7 @@ typing-extensions==4.12.2
     # via pydata-sphinx-theme
 urllib3==2.6.3
     # via requests
-wheel==0.45.1
+wheel==0.46.2
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
