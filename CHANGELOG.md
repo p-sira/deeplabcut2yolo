@@ -1,5 +1,9 @@
 # Changelog
 ## 2.2
+### 2.2.9
+**Dependencies**
+- Bump wheel from 0.45.1 to 0.46.2 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/11
+
 ### 2.2.8
 **Dependencies**
 - Bump urllib3 from 2.6.0 to 2.6.3 by @dependabot[bot] in https://github.com/p-sira/deeplabcut2yolo/pull/9
